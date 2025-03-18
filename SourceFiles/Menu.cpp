@@ -1,9 +1,17 @@
+//This is main file .cpp related to Menu state (Menu.h)
 #include "../Headerfiles/Menu.h"
+
+//ImGui Section
+void Menu::ImGuiDraw()
+{
+	PlayButton(ImVec2{100, 200});
+	ExitButton(ImVec2{ 400, 500 });
+}
 
 //constructor
 Menu::Menu(sf::RenderWindow& window, bool& changeState): window(window), changeState(changeState)
 {
-
+	
 }
 
 
@@ -18,11 +26,6 @@ void Menu::input(sf::Clock deltaClock)
 		if (event->is<sf::Event::Closed>())
 		{
 			window.close();
-		}
-		else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-		{
-			if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
-				changeState = true;
 		}
 	}
 
@@ -39,7 +42,8 @@ void Menu::update()
 void Menu::render()
 {
 	//here clear -> draw -> display system is used
-	window.clear(sf::Color::Blue);
+	window.clear(sf::Color::Cyan);
+	ImGuiDraw();
 	ImGui::SFML::Render(window);
 	window.display();
 }

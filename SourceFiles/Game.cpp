@@ -32,7 +32,7 @@ void Game::input(sf::Clock deltaClock)
 //update - update game's logic
 void Game::update()
 {
-
+	
 }
 
 //render - render objects on the screen

@@ -8,6 +8,8 @@ private:
 	//variables for state manage
 	sf::RenderWindow& window;
 	bool& changeState;
+	const int WindowXSize = 1600;
+	const int WindowYSize = 900;
 
 public:
 	//constructor
