@@ -51,9 +51,6 @@
     <ClCompile Include="Sourcefiles\Menu.cpp">
       <Filter>Resource Files\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Menu_ImGuiButtons.cpp">
-      <Filter>Resource Files\Menu</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headerfiles\Headers.h">

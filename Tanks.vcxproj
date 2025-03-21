@@ -135,7 +135,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SourceFiles\Menu_ImGuiButtons.cpp" />
     <ClCompile Include="imgui\imgui-SFML.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
