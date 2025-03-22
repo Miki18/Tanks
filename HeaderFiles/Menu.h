@@ -10,28 +10,45 @@ class Menu
 		{
 			MainMenu,
 			AreYouSure,
+			Credits,
+			Ranks,
 			None,    //2 last enums (None and Game) are not related to specyfic screen
 			Game	//They are variables that trigger specyfic action
 		};
 		//variables for state manage
 		sf::RenderWindow& window;
 		bool& changeState;
+
+		//Constants
 		const int WindowXSize = 1600;
 		const int WindowYSize = 900;
 
-		const float ButtonDefaultXSize = 300;
-		const float ButtonDefaultYSize = 150;
+		const float ButtonDefaultXSize = 275;
+		const float ButtonDefaultYSize = 100;
 		
+		//ImGui text style
 		ImGuiStyle& style = ImGui::GetStyle();
 
+		//sprites with textures
+		sf::Texture backgroundtex;
+		sf::Sprite backgroundsprite;
+		sf::Texture titletex;
+		sf::Sprite titlesprite;
+
+		//We start from MainMenu
 		ShowScreen showscreen = MainMenu;
+
 		//ImGui Section
-		//Buttons design (in ImGuiMenuButtons.cpp)
-		//MainMenu
-		void ButtonScheme(ImVec2 WindowPosition, ShowScreen NextScreen, std::string Title, std::string WindowText);
+		//Patterns
+		void ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string Title, std::string WindowText);
+		void TextPattern(ImVec2 TextPosition, std::string TextTitle, std::string Text);
 		//Screen design
 		void MainMenuScheme();
 		void AreYouSureScheme();
+		void CreditsScheme();
+		void RanksScheme();
+
+		//Draw a proper screen
 		void ImGuiDraw();
 
 	public:

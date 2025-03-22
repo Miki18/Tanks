@@ -14,7 +14,7 @@ int main() {
 	};
 
 	//Create RenderWindow and variables for manage states
-	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({ 1600, 900 }), "Tanks");    //add later full screens
+	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({ 1600, 900 }), "Tanks", sf::Style::None, sf::State::Fullscreen);
 	State CurrentGameState = State::MenuState;
 	bool changeState;
 

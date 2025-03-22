@@ -18,10 +18,13 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Menu">
+    <Filter Include="Classes">
+      <UniqueIdentifier>{31cef604-4e1f-4d92-b8cb-2c47fa0fc0fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Menu">
       <UniqueIdentifier>{cc889d30-709f-4bad-bcd5-629bded712e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Game">
+    <Filter Include="Classes\Game">
       <UniqueIdentifier>{75bc4cd7-4d01-4148-a476-ed8401d90d35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -46,10 +49,10 @@
       <Filter>ImGui\Source</Filter>
     </ClCompile>
     <ClCompile Include="Sourcefiles\Game.cpp">
-      <Filter>Resource Files\Game</Filter>
+      <Filter>Classes\Game</Filter>
     </ClCompile>
     <ClCompile Include="Sourcefiles\Menu.cpp">
-      <Filter>Resource Files\Menu</Filter>
+      <Filter>Classes\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,10 +87,18 @@
       <Filter>ImGui\Header</Filter>
     </ClInclude>
     <ClInclude Include="HeaderFiles\Game.h">
-      <Filter>Resource Files\Game</Filter>
+      <Filter>Classes\Game</Filter>
     </ClInclude>
     <ClInclude Include="Headerfiles\Menu.h">
-      <Filter>Resource Files\Menu</Filter>
+      <Filter>Classes\Menu</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Title.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
