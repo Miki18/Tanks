@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\Objects\Bullet.cpp" />
     <ClCompile Include="imgui\imgui-SFML.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -142,13 +143,15 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Sourcefiles\Game.cpp" />
-    <ClCompile Include="Sourcefiles\Menu.cpp" />
+    <ClCompile Include="Classes\Objects\Player.cpp" />
+    <ClCompile Include="Classes\GameStates\Game.cpp" />
+    <ClCompile Include="Classes\GameStates\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HeaderFiles\Game.h" />
-    <ClInclude Include="Headerfiles\Headers.h" />
-    <ClInclude Include="Headerfiles\Menu.h" />
+    <ClInclude Include="Classes\Objects\Bullet.h" />
+    <ClInclude Include="Classes\GameStates\Game.h" />
+    <ClInclude Include="Headers.h" />
+    <ClInclude Include="Classes\GameStates\Menu.h" />
     <ClInclude Include="imgui\imconfig-SFML.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui-SFML.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="Classes\Objects\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\background.png" />

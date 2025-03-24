@@ -1,8 +1,8 @@
 //includes; Headers has include from imgui, sfml and others that are needed in different files
 //Menu.h and Game.h are classes
-#include "HeaderFiles/Headers.h"
-#include "HeaderFiles/Menu.h"
-#include "HeaderFiles/Game.h"
+#include "Headers.h"
+#include "Classes/GameStates/Menu.h"
+#include "Classes/GameStates/Game.h"
 
 int main() {
 
@@ -13,9 +13,13 @@ int main() {
 		GameState
 	};
 
+	sf::ContextSettings settings;
+	settings.antiAliasingLevel = 8;
+
 	//Create RenderWindow and variables for manage states
-	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({ 1600, 900 }), "Tanks", sf::Style::None, sf::State::Fullscreen);
-	State CurrentGameState = State::MenuState;
+	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({ 1600, 900 }), "Tanks", sf::Style::None, sf::State::Fullscreen, settings);
+	State CurrentGameState = State::MenuState;     //FINAL
+	//State CurrentGameState = State::GameState;      //FOR TESTS
 	bool changeState;
 
 	//Imgui init
@@ -25,8 +29,11 @@ int main() {
 	sf::Clock deltaClock;
 
 	//States
-	Menu* menu = new Menu(window, changeState);
+	Menu* menu = new Menu(window, changeState);     //FINAL
 	Game* game = nullptr;
+
+	//Menu* menu = nullptr;                            //FOR TESTS
+	//Game* game = new Game(window, changeState);
 
 	//Main game loop
 	while (window.isOpen())
@@ -47,7 +54,7 @@ int main() {
 		}
 		else
 		{
-			game->update();
+			game->update(deltaClock);
 		}
 
 		//change state if changeState is set on true to the opposite state

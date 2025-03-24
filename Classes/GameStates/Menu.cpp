@@ -1,5 +1,5 @@
 //This is main file .cpp related to Menu state (Menu.h)
-#include "../Headerfiles/Menu.h"
+#include "Menu.h"
 
 //ImGui Section
 //Patterns
@@ -49,13 +49,13 @@ void Menu::TextPattern(ImVec2 TextPosition, std::string TextTitle, std::string T
 void Menu::MainMenuScheme()
 {
 	float YPosition = 100;
-	YPosition += 0 * ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	YPosition += ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize/2 - ButtonDefaultXSize/2, YPosition }, ShowScreen::Game, "PlayButton", "Play");
-	YPosition += 1 * ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Ranks, "Ranks", "Ranks");
-	YPosition += 1 * ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
-	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Credits, "Credits", "Credits");
-	YPosition += 1 * ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Options, "Options", "Options");
+	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::AreYouSure, "ExitButton", "Exit");
 }
 
@@ -74,12 +74,41 @@ void Menu::CreditsScheme()
 	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 200 }, "Creator", "This game was made by Miki18");
 	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 450, 300 }, "Music", "Music from Kevin MacLeod");
 	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 550, 400 }, "Title", "Title was generated with TextCraft");
-	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "Back", "Back");
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
 }
 
 void Menu::RanksScheme()
 {
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "Back", "Back");
+}
+
+void Menu::OptionsScheme()
+{
+	float YPosition = 100;
+	YPosition += ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Credits, "Credits", "Credits");
+	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Controls, "Controls", "Controls");
+	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Tips, "Tips", "Tips");
+	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::MainMenu, "Back", "Back");
+}
+
+void Menu::ControlsScheme()
+{
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 200, 200 }, "Movement", "RMB - Move");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 200, 300 }, "Shoot", "LMB - Shoot");
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
+}
+
+void Menu::TipsScheme()
+{
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 750, 200 }, "YourTank", "Your tank is green and has yellow bullets");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 650, 300 }, "EnemyTank", "Enemy tank is red and has red bullets");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 750, 400 }, "PowerUps", "Round Transparent objects are Power Ups");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 600, 500 }, "Points", "Yellow objects with '1' are points");
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
 }
 
 //Choose Screen design based on enum ShowScreen and showscreen value
@@ -101,6 +130,18 @@ void Menu::ImGuiDraw()
 	{
 		RanksScheme();
 	}
+	else if (showscreen == ShowScreen::Options)
+	{
+		OptionsScheme();
+	}
+	else if (showscreen == ShowScreen::Controls)
+	{
+		ControlsScheme();
+	}
+	else if (showscreen == ShowScreen::Tips)
+	{
+		TipsScheme();
+	}
 }
 
 //constructor
@@ -116,7 +157,7 @@ Menu::Menu(sf::RenderWindow& window, bool& changeState): window(window), changeS
 //input, update and render
 
 //Input - it handles events and player inputs
-void Menu::input(sf::Clock deltaClock)
+void Menu::input(sf::Clock &deltaClock)
 {
 	while (const auto event = window.pollEvent())
 	{

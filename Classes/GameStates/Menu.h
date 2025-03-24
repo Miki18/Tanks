@@ -1,6 +1,6 @@
 //includes
 #pragma once
-#include "../Headerfiles/Headers.h"
+#include "../Headers.h"
 
 class Menu
 {
@@ -12,6 +12,9 @@ class Menu
 			AreYouSure,
 			Credits,
 			Ranks,
+			Options,
+			Controls,
+			Tips,
 			None,    //2 last enums (None and Game) are not related to specyfic screen
 			Game	//They are variables that trigger specyfic action
 		};
@@ -23,7 +26,7 @@ class Menu
 		const int WindowXSize = 1600;
 		const int WindowYSize = 900;
 
-		const float ButtonDefaultXSize = 275;
+		const float ButtonDefaultXSize = 300;
 		const float ButtonDefaultYSize = 100;
 		
 		//ImGui text style
@@ -47,6 +50,9 @@ class Menu
 		void AreYouSureScheme();
 		void CreditsScheme();
 		void RanksScheme();
+		void OptionsScheme();
+		void ControlsScheme();
+		void TipsScheme();
 
 		//Draw a proper screen
 		void ImGuiDraw();
@@ -56,7 +62,7 @@ class Menu
 		Menu(sf::RenderWindow& window, bool& changeState);
 
 		//input, update, render
-		void input(sf::Clock deltaClock);
+		void input(sf::Clock &deltaClock);
 		void update();
 		void render();
 };

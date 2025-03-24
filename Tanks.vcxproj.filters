@@ -27,6 +27,12 @@
     <Filter Include="Classes\Game">
       <UniqueIdentifier>{75bc4cd7-4d01-4148-a476-ed8401d90d35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Player">
+      <UniqueIdentifier>{8d827282-8b43-41ba-8764-0ed637f9e417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Bullet">
+      <UniqueIdentifier>{b0324ba6-b1e4-4b7b-9ac9-006dfae911f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -48,17 +54,20 @@
     <ClCompile Include="imgui\imgui-SFML.cpp">
       <Filter>ImGui\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Sourcefiles\Game.cpp">
+    <ClCompile Include="Classes\GameStates\Game.cpp">
       <Filter>Classes\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Sourcefiles\Menu.cpp">
+    <ClCompile Include="Classes\GameStates\Menu.cpp">
       <Filter>Classes\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\Player.cpp">
+      <Filter>Classes\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\Bullet.cpp">
+      <Filter>Classes\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headerfiles\Headers.h">
-      <Filter>HeaderFiles</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>ImGui\Header</Filter>
     </ClInclude>
@@ -86,11 +95,18 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>ImGui\Header</Filter>
     </ClInclude>
-    <ClInclude Include="HeaderFiles\Game.h">
+    <ClInclude Include="Classes\GameStates\Game.h">
       <Filter>Classes\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Headerfiles\Menu.h">
+    <ClInclude Include="Classes\GameStates\Menu.h">
       <Filter>Classes\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\Player.h">
+      <Filter>Classes\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers.h" />
+    <ClInclude Include="Classes\Objects\Bullet.h">
+      <Filter>Classes\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
