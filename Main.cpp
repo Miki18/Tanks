@@ -22,11 +22,10 @@ int main() {
 	//State CurrentGameState = State::GameState;      //FOR TESTS
 	bool changeState;
 
+	//window.setFramerateLimit(120);
+
 	//Imgui init
 	ImGui::SFML::Init(window);
-
-	//Clock
-	sf::Clock deltaClock;
 
 	//States
 	Menu* menu = new Menu(window, changeState);     //FINAL
@@ -41,11 +40,11 @@ int main() {
 		//Choose if we should go to menu or game state
 		if (CurrentGameState == State::MenuState)
 		{
-			menu->input(deltaClock);
+			menu->input();
 		}
 		else
 		{
-			game->input(deltaClock);
+			game->input();
 		}
 
 		if (CurrentGameState == State::MenuState)
@@ -54,7 +53,7 @@ int main() {
 		}
 		else
 		{
-			game->update(deltaClock);
+			game->update();
 		}
 
 		//change state if changeState is set on true to the opposite state

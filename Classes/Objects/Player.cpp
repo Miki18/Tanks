@@ -20,7 +20,8 @@ Player::Player(sf::Vector2f PlayerPos)
 
 	Health = 100;
 	Cooldown = 0.75;
-	PlayerSpeed = 10;
+	PlayerSpeed = 150;
+	Points = 0;
 }
 
 void Player::calculateMovement(sf::Vector2f MousePos)
@@ -35,8 +36,8 @@ void Player::calculateMovement(sf::Vector2f MousePos)
 
 void Player::movePlayer(sf::Vector2f MousePos, int WindowXSize, int WindowYSize, float dt)
 {
-	circle.move(Direction * PlayerSpeed * dt * 1000.0f);
-	rectangle.move(Direction * PlayerSpeed * dt * 1000.0f);
+	circle.move(Direction * PlayerSpeed * dt);
+	rectangle.move(Direction * PlayerSpeed * dt);
 
 	//Check if player will go outside map
 	//We can check only circle position, because rectangle has the same position as circle
@@ -94,7 +95,22 @@ void Player::TransformPlayer(sf::Vector2f MousePos, int WindowXSize, int WindowY
 	}
 }
 
+void Player::AddPoint()
+{
+	Points++;
+}
+
 sf::Vector2f Player::getPosition()
 {
 	return circle.getPosition();
+}
+
+int Player::getPoints()
+{
+	return Points;
+}
+
+float Player::getCooldown()
+{
+	return Cooldown;
 }

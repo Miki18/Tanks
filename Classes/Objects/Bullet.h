@@ -4,7 +4,7 @@
 class Bullet
 {
 	private:
-		const float BulletRadius = 9.0f;
+		float BulletRadius = 9.0f;
 		sf::CircleShape circle;
 
 		sf::Vector2f Direction;
@@ -12,7 +12,7 @@ class Bullet
 		int WindowXSize;
 		int WindowYSize;
 
-		float BulletSpeed = 25;
+		float BulletSpeed = 400;
 	
 	public:
 

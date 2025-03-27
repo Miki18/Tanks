@@ -29,7 +29,7 @@ void Bullet::CalculateDirection(sf::Vector2f BulletPosition, sf::Vector2f MouseP
 
 void Bullet::MoveBullet(float dt)
 {
-	circle.move(Direction * BulletSpeed * dt * 1000.f);
+	circle.move(Direction * BulletSpeed * dt);
 }
 
 bool Bullet::CheckBullet()

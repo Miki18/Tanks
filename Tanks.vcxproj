@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Objects\Bullet.cpp" />
+    <ClCompile Include="Classes\Objects\Coin.cpp" />
     <ClCompile Include="imgui\imgui-SFML.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="Classes\Objects\Bullet.h" />
     <ClInclude Include="Classes\GameStates\Game.h" />
+    <ClInclude Include="Classes\Objects\Coin.h" />
     <ClInclude Include="Headers.h" />
     <ClInclude Include="Classes\GameStates\Menu.h" />
     <ClInclude Include="imgui\imconfig-SFML.h" />
@@ -165,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\background.png" />
+    <Image Include="Resources\coin.png" />
     <Image Include="Resources\Title.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

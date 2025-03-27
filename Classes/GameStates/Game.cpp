@@ -1,16 +1,17 @@
 #include "Game.h"
 
 //Constructor
-Game::Game(sf::RenderWindow& window, bool& changeState) : window(window), changeState(changeState), player(sf::Vector2f(0, 0))
+Game::Game(sf::RenderWindow& window, bool& changeState) : window(window), changeState(changeState), player(sf::Vector2f(0, 0)), CoinText("Resources/coin.png")
 {
-	
+	srand(time(NULL));
+	CoinText.setSmooth(false);
 }
 
 
 //input, update and render
 
 //Input - it handles events and player inputs
-void Game::input(sf::Clock &deltaClock)
+void Game::input()
 {
 	while (const auto event = window.pollEvent())
 	{
@@ -29,8 +30,12 @@ void Game::input(sf::Clock &deltaClock)
 
 			if (keyPressed->button == sf::Mouse::Button::Left)
 			{
-				sf::Vector2f Pos = player.getPosition();
-				bullets.emplace_back(Pos, CurrentMousePos, WindowXSize, WindowYSize);
+				if (TimeSincePlayerShoot > player.getCooldown())
+				{
+					sf::Vector2f Pos = player.getPosition();
+					bullets.emplace_back(Pos, CurrentMousePos, WindowXSize, WindowYSize);
+					TimeSincePlayerShoot = 0.0f;
+				}
 			}
 		}
 
@@ -43,11 +48,11 @@ void Game::input(sf::Clock &deltaClock)
 		}
 	}
 
-	ImGui::SFML::Update(window, deltaClock.restart());
+	ImGui::SFML::Update(window, deltaClock.getElapsedTime());
 }
 
 //update - update game's logic
-void Game::update(sf::Clock &deltaClock)
+void Game::update()
 {
 	//Update Time and Mouse Position
 	float dt = deltaClock.restart().asSeconds();
@@ -63,9 +68,19 @@ void Game::update(sf::Clock &deltaClock)
 	{
 		if (bullets[i].CheckBullet())
 		{
-			//bullets.erase(bullets.begin() + i);
+			bullets.erase(bullets.begin() + i);
 		}
 	}
+
+	TimeUntilCoinSpawn = TimeUntilCoinSpawn - dt;
+	if (TimeUntilCoinSpawn < 0.0f)
+	{
+		Coin coin(CoinText, sf::Vector2f(rand()%WindowXSize, rand()%WindowYSize));
+		coins.emplace_back(coin);
+		TimeUntilCoinSpawn = 3.0f;
+	}
+
+	TimeSincePlayerShoot = TimeSincePlayerShoot + dt;
 }
 
 //render - render objects on the screen
@@ -73,6 +88,10 @@ void Game::render()
 {
 	//here clear -> draw -> display system is used
 	window.clear(sf::Color{0,153, 76, 255});
+	for (int i = 0; i < coins.size(); i++)
+	{
+		coins[i].DrawCoin(window);
+	}
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		bullets[i].DrawBullet(window);

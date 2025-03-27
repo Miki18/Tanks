@@ -157,7 +157,7 @@ Menu::Menu(sf::RenderWindow& window, bool& changeState): window(window), changeS
 //input, update and render
 
 //Input - it handles events and player inputs
-void Menu::input(sf::Clock &deltaClock)
+void Menu::input()
 {
 	while (const auto event = window.pollEvent())
 	{
@@ -168,7 +168,7 @@ void Menu::input(sf::Clock &deltaClock)
 		}
 	}
 
-	ImGui::SFML::Update(window, deltaClock.restart());
+	ImGui::SFML::Update(window, deltaClock.getElapsedTime());
 }
 
 //update - update menu's logic

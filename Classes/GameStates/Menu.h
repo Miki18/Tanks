@@ -22,6 +22,9 @@ class Menu
 		sf::RenderWindow& window;
 		bool& changeState;
 
+		//Time
+		sf::Clock deltaClock;
+
 		//Constants
 		const int WindowXSize = 1600;
 		const int WindowYSize = 900;
@@ -62,7 +65,7 @@ class Menu
 		Menu(sf::RenderWindow& window, bool& changeState);
 
 		//input, update, render
-		void input(sf::Clock &deltaClock);
+		void input();
 		void update();
 		void render();
 };

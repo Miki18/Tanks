@@ -16,6 +16,7 @@ class Player
 		int Health;
 		float Cooldown;
 		float PlayerSpeed;
+		int Points;
 
 		sf::Vector2f Direction;
 		float length;
@@ -28,7 +29,9 @@ class Player
 
 		void DrawPlayer(sf::RenderWindow& window);
 		void TransformPlayer(sf::Vector2f MousePos, int WindowXSize, int WindowYSize, float dt, bool IsPlayerMove);
+		void AddPoint();
 		
 		sf::Vector2f getPosition();
+		int getPoints();
+		float getCooldown();
 };
-
