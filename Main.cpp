@@ -22,13 +22,13 @@ int main() {
 	//State CurrentGameState = State::GameState;      //FOR TESTS
 	bool changeState;
 
-	//window.setFramerateLimit(120);
+	int level = 1;
 
 	//Imgui init
 	ImGui::SFML::Init(window);
 
 	//States
-	Menu* menu = new Menu(window, changeState);     //FINAL
+	Menu* menu = new Menu(window, changeState, level);     //FINAL
 	Game* game = nullptr;
 
 	//Menu* menu = nullptr;                            //FOR TESTS
@@ -62,13 +62,13 @@ int main() {
 			if (CurrentGameState == State::MenuState)
 			{
 				delete menu;
-				game = new Game(window, changeState);
+				game = new Game(window, changeState, level);
 				CurrentGameState = State::GameState;
 			}
 			else
 			{
 				delete game;
-				menu = new Menu(window, changeState);
+				menu = new Menu(window, changeState, level);
 				CurrentGameState = State::MenuState;
 			}
 			changeState = false;

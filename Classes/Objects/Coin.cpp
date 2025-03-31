@@ -11,3 +11,8 @@ void Coin::DrawCoin(sf::RenderWindow& window)
 {
 	window.draw(sprite);
 }
+
+sf::Vector2f Coin::getPosition()
+{
+	return sprite.getPosition();
+}

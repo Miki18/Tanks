@@ -3,7 +3,7 @@
 
 //ImGui Section
 //Patterns
-void Menu::ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string WindowTitle, std::string WindowText)
+void Menu::ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string WindowTitle, std::string WindowText, int LevelNumber = 1)
 {
 	//Button Pattern
 
@@ -21,6 +21,7 @@ void Menu::ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::stri
 		//"Game" and "None" from enum inform us to start game level or quick game
 		if (NextScreen == ShowScreen::Game)
 		{
+			level = LevelNumber;
 			changeState = true;
 		}
 		else if (NextScreen == ShowScreen::None)
@@ -50,7 +51,7 @@ void Menu::MainMenuScheme()
 {
 	float YPosition = 100;
 	YPosition += ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
-	ButtonPattern(ImVec2{ WindowXSize/2 - ButtonDefaultXSize/2, YPosition }, ShowScreen::Game, "PlayButton", "Play");
+	ButtonPattern(ImVec2{ WindowXSize/2 - ButtonDefaultXSize/2, YPosition }, ShowScreen::Levels, "PlayButton", "Play");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Ranks, "Ranks", "Ranks");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
@@ -111,6 +112,22 @@ void Menu::TipsScheme()
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
 }
 
+void Menu::LevelsScheme()
+{
+	TextPattern(ImVec2(WindowXSize / 2 - 200, 150), "Select Level", "Select Level");
+	float XPosition = 0;
+	XPosition += (WindowXSize - (ButtonDefaultXSize * 2)) / 7 * 3;
+	ButtonPattern(ImVec2{ XPosition, 300 }, ShowScreen::Game, "Level1", "Level 1", 1);
+	XPosition += ButtonDefaultXSize + (WindowXSize - (ButtonDefaultXSize * 2)) / 7;
+	ButtonPattern(ImVec2{ XPosition, 300 }, ShowScreen::Game, "Level2", "Level 2", 2);
+	XPosition = (WindowXSize - (ButtonDefaultXSize * 2)) / 7 * 3;
+	ButtonPattern(ImVec2{ XPosition, 450 }, ShowScreen::Game, "Level3", "Level 3", 3);
+	XPosition += ButtonDefaultXSize + (WindowXSize - (ButtonDefaultXSize * 2)) / 7;
+	ButtonPattern(ImVec2{ XPosition, 450 }, ShowScreen::Game, "Level4", "Level 4", 4);
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 600 }, ShowScreen::Game, "Random", "Random", 5);
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "Back", "Back");
+}
+
 //Choose Screen design based on enum ShowScreen and showscreen value
 void Menu::ImGuiDraw()
 {
@@ -142,10 +159,14 @@ void Menu::ImGuiDraw()
 	{
 		TipsScheme();
 	}
+	else if (showscreen == ShowScreen::Levels)
+	{
+		LevelsScheme();
+	}
 }
 
 //constructor
-Menu::Menu(sf::RenderWindow& window, bool& changeState): window(window), changeState(changeState), backgroundtex("Resources/background.png"), backgroundsprite(backgroundtex), titletex("Resources/Title.png"), titlesprite(titletex)
+Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level): window(window), changeState(changeState), level(level), backgroundtex("Resources/background.png"), backgroundsprite(backgroundtex), titletex("Resources/Title.png"), titlesprite(titletex)
 {
 	//set title sprite position
 	titlesprite.setPosition(sf::Vector2f(WindowXSize/2 - 250, 40));

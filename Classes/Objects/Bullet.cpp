@@ -3,8 +3,8 @@
 Bullet::Bullet(sf::Vector2f TankPosition, sf::Vector2f MousePos, int WindowXSize, int WindowYSize)
 {
 	circle.setOrigin(circle.getGeometricCenter());
-	circle.setRadius(BulletRadius);
-	circle.setOutlineThickness(3.0f);
+	circle.setRadius(9.0f);
+	circle.setOutlineThickness(2.0f);
 	circle.setFillColor(sf::Color::Yellow);
 	circle.setOutlineColor(sf::Color::Black);
 
@@ -44,4 +44,14 @@ bool Bullet::CheckBullet()
 		return true;
 	}
 	return false;
+}
+
+sf::Vector2f Bullet::getBulletPosition()
+{
+	return circle.getPosition();
+}
+
+float Bullet::getBulletSize()
+{
+	return 11.0f;
 }

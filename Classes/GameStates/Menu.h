@@ -15,12 +15,14 @@ class Menu
 			Options,
 			Controls,
 			Tips,
+			Levels,
 			None,    //2 last enums (None and Game) are not related to specyfic screen
 			Game	//They are variables that trigger specyfic action
 		};
 		//variables for state manage
 		sf::RenderWindow& window;
 		bool& changeState;
+		int& level;
 
 		//Time
 		sf::Clock deltaClock;
@@ -46,7 +48,7 @@ class Menu
 
 		//ImGui Section
 		//Patterns
-		void ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string Title, std::string WindowText);
+		void ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string Title, std::string WindowText, int LevelNumber);
 		void TextPattern(ImVec2 TextPosition, std::string TextTitle, std::string Text);
 		//Screen design
 		void MainMenuScheme();
@@ -56,13 +58,14 @@ class Menu
 		void OptionsScheme();
 		void ControlsScheme();
 		void TipsScheme();
+		void LevelsScheme();
 
 		//Draw a proper screen
 		void ImGuiDraw();
 
 	public:
 		//constructor
-		Menu(sf::RenderWindow& window, bool& changeState);
+		Menu(sf::RenderWindow& window, bool& changeState, int& level);
 
 		//input, update, render
 		void input();

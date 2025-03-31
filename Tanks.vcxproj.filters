@@ -36,6 +36,9 @@
     <Filter Include="Classes\Coin">
       <UniqueIdentifier>{4b4d8b4f-ea9a-4124-bb9e-432745d12803}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Wall">
+      <UniqueIdentifier>{c6c1dbad-b78a-46b0-84df-fe581ee48117}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="Classes\Objects\Coin.cpp">
       <Filter>Classes\Coin</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\Wall.cpp">
+      <Filter>Classes\Wall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="Classes\Objects\Coin.h">
       <Filter>Classes\Coin</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\Wall.h">
+      <Filter>Classes\Wall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

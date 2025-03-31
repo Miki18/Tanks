@@ -30,8 +30,12 @@ class Player
 		void DrawPlayer(sf::RenderWindow& window);
 		void TransformPlayer(sf::Vector2f MousePos, int WindowXSize, int WindowYSize, float dt, bool IsPlayerMove);
 		void AddPoint();
+		void SetPlayerXPosition(float value);
+		void SetPlayerYPosition(float value);
 		
 		sf::Vector2f getPosition();
 		int getPoints();
+		int getHealth();
 		float getCooldown();
+		float getPlayerRadius();
 };

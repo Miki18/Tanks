@@ -4,7 +4,6 @@
 class Bullet
 {
 	private:
-		float BulletRadius = 9.0f;
 		sf::CircleShape circle;
 
 		sf::Vector2f Direction;
@@ -21,5 +20,8 @@ class Bullet
 		void CalculateDirection(sf::Vector2f BulletPosition, sf::Vector2f MousePosition);
 		void MoveBullet(float dt);
 		bool CheckBullet();
+		
+		sf::Vector2f getBulletPosition();
+		float getBulletSize();
 };
 

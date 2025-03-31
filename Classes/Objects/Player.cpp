@@ -3,17 +3,17 @@
 //Constructor
 Player::Player(sf::Vector2f PlayerPos)
 {
-	circle.setRadius(25.0f);
+	circle.setRadius(20.0f);
 	circle.setFillColor(sf::Color{ 0, 100, 0, 255 });
 	circle.setOutlineThickness(5.0f);
 	circle.setOutlineColor(sf::Color::Black);
 	circle.setOrigin(circle.getGeometricCenter());
 
-	rectangle.setSize(sf::Vector2f(50, 22));
+	rectangle.setSize(sf::Vector2f(40, 15));
 	rectangle.setFillColor(sf::Color{128, 128, 128, 255});
 	rectangle.setOutlineThickness(5.0f);
 	rectangle.setOutlineColor(sf::Color::Black);
-	rectangle.setOrigin(sf::Vector2f(0, 11.0));
+	rectangle.setOrigin(sf::Vector2f(0, 7.5));
 
 	circle.setPosition(PlayerPos);
 	rectangle.setPosition(PlayerPos);
@@ -100,6 +100,18 @@ void Player::AddPoint()
 	Points++;
 }
 
+void Player::SetPlayerXPosition(float value)
+{
+	circle.setPosition(sf::Vector2f(value, circle.getPosition().y));
+	rectangle.setPosition(sf::Vector2f(value, rectangle.getPosition().y));
+}
+
+void Player::SetPlayerYPosition(float value)
+{
+	circle.setPosition(sf::Vector2f(circle.getPosition().x, value));
+	rectangle.setPosition(sf::Vector2f(rectangle.getPosition().x, value));
+}
+
 sf::Vector2f Player::getPosition()
 {
 	return circle.getPosition();
@@ -110,7 +122,17 @@ int Player::getPoints()
 	return Points;
 }
 
+int Player::getHealth()
+{
+	return Health;
+}
+
 float Player::getCooldown()
 {
 	return Cooldown;
+}
+
+float Player::getPlayerRadius()
+{
+	return 25.0f;
 }
