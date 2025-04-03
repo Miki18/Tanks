@@ -4,14 +4,18 @@
 class Wall
 {
 	private:
+		//Visualization
 		sf::RectangleShape square;
 
 	public:
+		//Constructor
 		Wall(sf::Vector2f Position);
 
-		sf::Vector2f getPosition();
-
+		//Draw
 		void DrawWall(sf::RenderWindow& window);
+
+		//getters
+		sf::Vector2f getPosition();
 		float getWallSize();
 };
 

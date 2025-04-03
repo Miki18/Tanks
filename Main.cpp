@@ -13,6 +13,7 @@ int main() {
 		GameState
 	};
 
+	//Setting antialliasing
 	sf::ContextSettings settings;
 	settings.antiAliasingLevel = 8;
 
@@ -22,6 +23,8 @@ int main() {
 	//State CurrentGameState = State::GameState;      //FOR TESTS
 	bool changeState;
 
+	//To select level
+	//Level 1 is default
 	int level = 1;
 
 	//Imgui init

@@ -1,5 +1,6 @@
 #include "Wall.h"
 
+//Constructor
 Wall::Wall(sf::Vector2f Position)
 {
 	square.setSize(sf::Vector2f(45,45));
@@ -10,14 +11,16 @@ Wall::Wall(sf::Vector2f Position)
 	square.setPosition(Position);
 }
 
-sf::Vector2f Wall::getPosition()
-{
-	return square.getPosition();
-}
-
+//Draw
 void Wall::DrawWall(sf::RenderWindow& window)
 {
 	window.draw(square);
+}
+
+//Getters
+sf::Vector2f Wall::getPosition()
+{
+	return square.getPosition();
 }
 
 float Wall::getWallSize()
