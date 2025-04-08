@@ -13,6 +13,7 @@ private:
 	sf::RenderWindow& window;
 	bool& changeState;
 	int& level;
+	int& Score;
 
 	//Window constant values
 	const int WindowXSize = 1600;
@@ -60,7 +61,7 @@ private:
 
 public:
 	//constructor
-	Game(sf::RenderWindow& window, bool& changeState, int& level);
+	Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score);
 
 	//input, update, render
 	void input();

@@ -138,4 +138,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Saved\Rank" />
+  </ItemGroup>
 </Project>

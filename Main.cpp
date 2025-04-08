@@ -17,11 +17,12 @@ int main() {
 	sf::ContextSettings settings;
 	settings.antiAliasingLevel = 8;
 
-	//Create RenderWindow and variables for manage states
+	//Create RenderWindow and variables for manage states (and those which has to be between states)
 	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({ 1600, 900 }), "Tanks", sf::Style::None, sf::State::Fullscreen, settings);
 	State CurrentGameState = State::MenuState;     //FINAL
 	//State CurrentGameState = State::GameState;      //FOR TESTS
 	bool changeState;
+	int YourLastScore = 0;
 
 	//To select level
 	//Level 1 is default
@@ -31,7 +32,7 @@ int main() {
 	ImGui::SFML::Init(window);
 
 	//States
-	Menu* menu = new Menu(window, changeState, level);     //FINAL
+	Menu* menu = new Menu(window, changeState, level, YourLastScore, true);     //FINAL  //Last argument tell us if we should start with MainMenu or End screen
 	Game* game = nullptr;
 
 	//Menu* menu = nullptr;                            //FOR TESTS
@@ -65,13 +66,14 @@ int main() {
 			if (CurrentGameState == State::MenuState)
 			{
 				delete menu;
-				game = new Game(window, changeState, level);
+				YourLastScore = 0;       //reset
+				game = new Game(window, changeState, level, YourLastScore);
 				CurrentGameState = State::GameState;
 			}
 			else
 			{
 				delete game;
-				menu = new Menu(window, changeState, level);
+				menu = new Menu(window, changeState, level, YourLastScore, false);
 				CurrentGameState = State::MenuState;
 			}
 			changeState = false;

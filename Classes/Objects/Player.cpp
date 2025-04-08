@@ -25,7 +25,6 @@ Player::Player(sf::Vector2f PlayerPos)
 	Health = 100;
 	Cooldown = 0.75;
 	PlayerSpeed = 150;
-	Points = 0;
 }
 
 //Movement functions (using inside this class)
@@ -111,10 +110,9 @@ void Player::TransformPlayer(sf::Vector2f MousePos, int WindowXSize, int WindowY
 	}
 }
 
-//Increase player points
-void Player::AddPoint()
+void Player::TakeDamage(int dmg)
 {
-	Points++;
+	Health = Health - dmg;
 }
 
 //Setters
@@ -134,11 +132,6 @@ void Player::SetPlayerYPosition(float value)
 sf::Vector2f Player::getPosition()
 {
 	return circle.getPosition();
-}
-
-int Player::getPoints()
-{
-	return Points;
 }
 
 int Player::getHealth()

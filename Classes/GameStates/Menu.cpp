@@ -1,16 +1,111 @@
 //This is main file .cpp related to Menu state (Menu.h)
 #include "Menu.h"
 
+void Menu::LoadRanks()
+{
+	std::fstream file;
+	file.open("Saved/Rank", std::ios::in);
+
+	std::string res;     //here getline will return lines
+	std::string sep = "";    //we separate it on different strings
+	
+	int place = 0;             //place
+	while (getline(file, res))   //read lines
+	{
+		sep.clear();
+		int i = 0;
+		for (i = 0; i < res.length(); i++)    //load until ' '
+		{
+			if (res[i] != ' ')
+			{
+				sep.append(1, res[i]);
+			}
+			else
+			{
+				break;
+			}
+		}
+		i++;    //go to next char
+
+		ranks[0][place] = sep;    //save
+		sep.clear();
+
+		for (i; i < res.length(); i++)
+		{
+			if (res[i] != ' ')
+			{
+				sep.append(1, res[i]);
+			}
+			else
+			{
+				break;
+			}
+		}
+		i++;
+
+		ranks[1][place] = sep;
+		sep.clear();
+
+		for (i; i < res.length(); i++)
+		{
+			if (res[i] != ' ')
+			{
+				sep.append(1, res[i]);
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		ranks[2][place] = sep;
+		sep.clear();
+		place++;
+	}
+	file.close();
+}
+
+//Creates table with ranks
+void Menu::ShowRanks(float YPos, float height)
+{
+	ImGui::SetNextWindowSize(ImVec2(1100, height));
+	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(WindowXSize / 2) - 550, YPos));
+	ImGui::Begin("ScoreTables", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground);
+	if (ImGui::BeginTable("Scores", 3), ImGuiTableFlags_Borders, ImGuiTableFlags_BordersInner)
+	{
+		for (int row = 0; row <= 10; row++)
+		{
+			ImGui::TableNextRow();
+			if (row == 0)
+			{
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Text("Nick");
+				ImGui::TableSetColumnIndex(1);
+				ImGui::Text("Score");
+				ImGui::TableSetColumnIndex(2);
+				ImGui::Text("Level");
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(150, 150, 150, 255));
+			}
+			else
+			{
+				for (int column = 0; column < 3; column++)
+				{
+					ImGui::TableSetColumnIndex(column);
+					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(190, 190, 190, 205));
+					ImGui::Text("%s ", ranks[column][row - 1].c_str());
+				}
+			}
+		}
+		ImGui::EndTable();
+	}
+	ImGui::End();
+}
+
 //ImGui Section
 //Patterns
 void Menu::ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string WindowTitle, std::string WindowText, int LevelNumber = 1)
 {
 	//Button Pattern
-
-	//Imgui WindowStyle
-	style.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 0.8f);
-	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
-	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
 
 	//ImGui WindowSettings
 	ImGui::SetNextWindowPos(WindowPosition);
@@ -80,6 +175,7 @@ void Menu::CreditsScheme()
 
 void Menu::RanksScheme()
 {
+	ShowRanks(200, 450);
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "Back", "Back");
 }
 
@@ -128,6 +224,101 @@ void Menu::LevelsScheme()
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "Back", "Back");
 }
 
+void Menu::SaveScoreScheme()
+{
+	static char PlayerName[11] = { 0 };   //for insert name (no longer than 10)   static to keep value
+	TextPattern(ImVec2(WindowXSize / 2 - 600, 300), "Congrats", "Congratulations! You are top 10!");
+	TextPattern(ImVec2(WindowXSize / 2 - 300, 400), "Insert", "Insert your name");
+	ImGui::SetNextWindowSize(ImVec2(400, 200));
+	ImGui::SetNextWindowPos(ImVec2(WindowXSize / 2 - 150, 500));
+	ImGui::Begin("Name", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+	ImGui::InputText("##", PlayerName, 11);      // '##' will not be shown next to input field
+	ImGui::End();
+
+	//Button - but in this case a very specyfic button is needed, so this screen will not use typical button pattern
+	ImGui::SetNextWindowPos(ImVec2( WindowXSize / 2 - ButtonDefaultXSize / 2, 750 ));
+	ImGui::Begin("Done", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
+	ImGui::SetWindowSize(ImVec2{ ButtonDefaultXSize, ButtonDefaultYSize });
+	if (ImGui::Button("Done", ImVec2{static_cast<float>(ButtonDefaultXSize * 0.95), static_cast<float>(ButtonDefaultYSize * 0.84)}))
+	{
+		std::string Name = PlayerName;
+		if (!Name.empty())    //Name has to have at least one char
+		{
+			bool IsOk = true;
+			for (int i = 0; i < Name.length(); i++)
+			{
+				if (Name[i] == ' ')    //Name can't have space
+				{
+					IsOk = false;
+					break;
+				}
+			}
+
+			if (IsOk)
+			{
+				//Update ranks
+				//No need to check 10th place, because if player see that screen that means he has bigger score than 10th place (we checked it earlier)
+				for (int i = 8; i >= 0; i--)
+				{
+					if (YourLastScore > stoi(ranks[1][i]))     //if your score is bigger than we move i-th score down
+					{
+						ranks[0][i + 1] = ranks[0][i];
+						ranks[1][i + 1] = ranks[1][i];
+						ranks[2][i + 1] = ranks[2][i];
+
+						if (i == 0)       //in case if player got 1st place
+						{
+							ranks[0][i] = Name;
+							ranks[1][i] = std::to_string(YourLastScore);
+							if (level == 5)
+							{
+								ranks[2][i] = "R";
+							}
+							else
+							{
+								ranks[2][i] = std::to_string(level);
+							}
+						}
+					}
+					else      //if not than write player's score to i-1 th position
+					{
+						ranks[0][i + 1] = Name;
+						ranks[1][i + 1] = std::to_string(YourLastScore);
+						if (level == 5)
+						{
+							ranks[2][i + 1] = "R";
+						}
+						else
+						{
+							ranks[2][i + 1] = std::to_string(level);
+						}
+						break;
+					}
+				}
+
+				std::fstream file;
+				file.open("Saved/Rank", std::ios::out);   //we overwrite the file
+				for (int i = 0; i < 10; i++)
+				{
+					file << ranks[0][i] << " " << ranks[1][i] << " " << ranks[2][i] << "\n";
+				}
+				file.close();
+				printf("Chce");
+				memset(PlayerName, 0, sizeof(PlayerName));
+				showscreen = ShowScreen::End;
+			}
+		}
+	}
+	ImGui::End();
+}
+
+void Menu::EndScheme()
+{
+	ShowRanks(200, 350);
+	TextPattern(ImVec2(static_cast<float>(WindowXSize / 2) - 250, 600), "YourScore", "Your Score: " + std::to_string(YourLastScore));
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "MainMenu", "Back");
+}
+
 //Choose Screen design based on enum ShowScreen and showscreen value
 void Menu::ImGuiDraw()
 {
@@ -163,15 +354,47 @@ void Menu::ImGuiDraw()
 	{
 		LevelsScheme();
 	}
+	else if (showscreen == ShowScreen::SaveScore)
+	{
+		SaveScoreScheme();
+	}
+	else if (showscreen == ShowScreen::End)
+	{
+		EndScheme();
+	}
 }
 
 //constructor
-Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level): window(window), changeState(changeState), level(level), backgroundtex("Resources/background.png"), backgroundsprite(backgroundtex), titletex("Resources/Title.png"), titlesprite(titletex)
+Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLastScore, bool MainMenu): window(window), changeState(changeState), level(level), YourLastScore(YourLastScore), backgroundtex("Resources/background.png"), backgroundsprite(backgroundtex), titletex("Resources/Title.png"), titlesprite(titletex)
 {
 	//set title sprite position
 	titlesprite.setPosition(sf::Vector2f(WindowXSize/2 - 250, 40));
 	//set font scale
 	ImGui::GetIO().FontGlobalScale = 5;
+
+	LoadRanks();
+
+	//Imgui WindowStyle
+	style.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 0.8f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
+
+	//Choose starter screen
+	if (MainMenu)
+	{
+		showscreen = ShowScreen::MainMenu;
+	}
+	else
+	{
+		if (stoi(ranks[1][9]) < YourLastScore)
+		{
+			showscreen = ShowScreen::SaveScore;
+		}
+		else
+		{
+			showscreen = ShowScreen::End;
+		}
+	}
 }
 
 

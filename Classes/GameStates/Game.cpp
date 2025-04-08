@@ -185,7 +185,7 @@ void Game::Player_CoinsCollision()
 	{
 		if (sqrt(pow((coins[i].getPosition().x - player.getPosition().x), 2) + pow((coins[i].getPosition().y - player.getPosition().y), 2)) < player.getPlayerRadius() * 1.5)
 		{
-			player.AddPoint();
+			Score++;
 			coins.erase(coins.begin() + i);
 		}
 	}
@@ -264,7 +264,7 @@ void Game::ImGuiHeathAndPoinsWindow()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowBgAlpha(0.33);
 	ImGui::Begin("Window", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize);
-	ImGui::Text("Points: %i", player.getPoints());
+	ImGui::Text("Points: %i", Score);
 	ImGui::Text("Health: %i", player.getHealth());
 	ImGui::End();
 	ImGui::PopStyleColor(1);
@@ -275,7 +275,7 @@ void Game::ImGuiHeathAndPoinsWindow()
 //Constructor
 //Constructor will load all textures and will store it in memory, so 
 //it will not have to be load every time when new object will be created
-Game::Game(sf::RenderWindow& window, bool& changeState, int& level) : window(window), changeState(changeState), level(level), player(sf::Vector2f(0, 0)), CoinText("Resources/coin.png")
+Game::Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score) : window(window), changeState(changeState), level(level), Score(Score), player(sf::Vector2f(0, 0)), CoinText("Resources/coin.png")
 {
 	//time
 	srand(time(NULL));
@@ -317,6 +317,13 @@ void Game::input()
 					bullets.emplace_back(Pos, CurrentMousePos, WindowXSize, WindowYSize);
 					TimeSincePlayerShoot = 0.0f;   //reset time
 				}
+			}
+
+			//FOR TEST ONLY
+			if (keyPressed->button == sf::Mouse::Button::Middle)
+			{
+				Score = 10;
+				player.TakeDamage(101);
 			}
 		}
 
@@ -370,9 +377,14 @@ void Game::update()
 	//Collision with coins
 	Player_CoinsCollision();
 
+	//Check if player is alive
+	if (player.getHealth() <= 0)
+	{
+		changeState = true;
+	}
+
 	//Increase time since player shoot
 	TimeSincePlayerShoot = TimeSincePlayerShoot + dt;
-	//printf("%f\n", dt);
 }
 
 //render - render objects on the screen
