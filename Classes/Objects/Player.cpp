@@ -25,6 +25,7 @@ Player::Player(sf::Vector2f PlayerPos)
 	Health = 100;
 	Cooldown = 0.75;
 	PlayerSpeed = 150;
+	Dmg = 20;
 }
 
 //Movement functions (using inside this class)
@@ -110,9 +111,55 @@ void Player::TransformPlayer(sf::Vector2f MousePos, int WindowXSize, int WindowY
 	}
 }
 
+//damage player (no need to check if helth>0 - it is done in game.cpp)
 void Player::TakeDamage(int dmg)
 {
 	Health = Health - dmg;
+}
+
+//Count down timer until it 0 or less
+//If 0 or less - remove power up (that is - set base value)
+void Player::CountSpeedTimer(float dt)
+{
+	if (SpeedTimer > 0)
+	{
+		SpeedTimer -= dt;
+		if (SpeedTimer <= 0)
+		{
+			PlayerSpeed = 150;
+		}
+	}
+}
+
+void Player::CountQuickfireTimer(float dt)
+{
+	if (QuickfireTimer > 0)
+	{
+		QuickfireTimer -= dt;
+		if (QuickfireTimer <= 0)
+		{
+			Cooldown = 0.75;
+		}
+	}
+}
+
+//Powerups function
+void Player::GrantPlayerSpeed()
+{
+	//set player speed to 200 and reset timer
+	PlayerSpeed = 250;
+	SpeedTimer = 5;
+}
+
+void Player::GrantPlayerQuickfire()
+{
+	Cooldown = 0.25;
+	QuickfireTimer = 5;
+}
+
+void Player::RestoreHealth()
+{
+	Health = 100;
 }
 
 //Setters
@@ -147,4 +194,9 @@ float Player::getCooldown()
 float Player::getPlayerRadius()
 {
 	return 25.0f;
+}
+
+int Player::getDamage()
+{
+	return Dmg;
 }

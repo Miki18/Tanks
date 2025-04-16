@@ -67,27 +67,64 @@ void Game::LoadLevel(int levelNumber)
 //Functions connected with coins
 
 //Manage coin spawning (measure and control time and coins number)
-void Game::CoinSpawningControl(float dt)
+void Game::ObjectSpawningControl(float dt)
 {
 	//Coins spawning (every 3 secons and no more than 10)
-	TimeUntilCoinSpawn = TimeUntilCoinSpawn - dt;
+	TimeUntilEnemySpawn = TimeUntilEnemySpawn - dt;
+
+	if (coins.size() < 10)
+	{
+		TimeUntilCoinSpawn = TimeUntilCoinSpawn - dt;
+	}
+
+	if (powerups.size() < 5)
+	{
+		TimeUntilPowerUpSpawn = TimeUntilPowerUpSpawn - dt;
+	}
+
 	if (TimeUntilCoinSpawn < 0.0f and coins.size() < 10)
 	{
 		int PosX = rand() % 32;
 		int PosY = rand() % 18;
 
-		SpawnCoinAlgorithm(PosX, PosY, 1);
+		SpawnObjectAlgorithm(PosX, PosY, ObjectType::CoinType, 0);
 
-		TimeUntilCoinSpawn = 5.0f;
+		TimeUntilCoinSpawn = 6.0f;
 	}
-	else if (TimeUntilCoinSpawn < 0.0f and coins.size() >= 10)
+
+	if (TimeUntilEnemySpawn < 0.0f and enemies.size() < 8)
 	{
-		TimeUntilCoinSpawn = 5.0f;
+		int PosX = rand() % 32;
+		int PosY = rand() % 18;
+
+		SpawnObjectAlgorithm(PosX, PosY, ObjectType::EnemyType, 0);
+
+		TimeUntilEnemySpawn = NextEnemySpawnAfter;
+
+		if (NextEnemySpawnAfter >= 4.1f)      //new enemy will spawn faster
+		{
+			NextEnemySpawnAfter = NextEnemySpawnAfter - 0.1f;
+		}
+	}
+	else if(TimeUntilEnemySpawn < 0.0f and enemies.size() >= 10)
+	{
+		//If it is not possible to add other enemy, then reset timer
+		TimeUntilEnemySpawn = NextEnemySpawnAfter;
+	}
+
+	if (TimeUntilPowerUpSpawn < 0.0f and powerups.size() <= 5)
+	{
+		int PosX = rand() % 32;
+		int PosY = rand() % 18;
+
+		SpawnObjectAlgorithm(PosX, PosY, ObjectType::PowerUpType, 0);
+
+		TimeUntilPowerUpSpawn = rand() % 10 + 5;
 	}
 }
 
 //Check if coin doesn't collide with wall and spawns if not
-bool Game::SpawnCoin(int PosX, int PosY)
+bool Game::SpawnObject(int PosX, int PosY, ObjectType Object)
 {
 	for (int i = 0; i < walls.size(); i++)
 	{
@@ -97,22 +134,63 @@ bool Game::SpawnCoin(int PosX, int PosY)
 		}
 	}
 
-	Coin coin(CoinText, sf::Vector2f(25 + PosX * 50, 25 + PosY * 50));
-	coins.emplace_back(coin);
-	return true;
+	//SpawnCoin
+	if (Object == ObjectType::CoinType)
+	{
+		Coin coin(CoinText, sf::Vector2f(25 + PosX * 50, 25 + PosY * 50));
+		coins.emplace_back(coin);
+		return true;
+	}
+	//SpawnEnemy
+	else if (Object == ObjectType::EnemyType)
+	{
+		//when we want to spawn enemy we need to check its distance to player
+		float dx = player.getPosition().x - 25 + PosX * 50;
+		float dy = player.getPosition().y - 25 + PosY * 50;
+
+		if (sqrt(dx * dx + dy * dy) < 150)
+		{
+			return false;
+		}
+
+		int EnemyType = rand() % 4;
+		if (EnemyType == 0 or EnemyType == 1)
+		{
+			BaseEnemy* enemy = new NormalEnemy(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50));
+			enemies.push_back(enemy);
+		}
+		else if (EnemyType == 2)
+		{
+			BaseEnemy* enemy = new FastEnemy(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50));
+			enemies.push_back(enemy);
+		}
+		else
+		{
+			BaseEnemy* enemy = new BigEnemy(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50));
+			enemies.push_back(enemy);
+		}
+
+		return true;
+	}
+	else if (Object == ObjectType::PowerUpType)
+	{
+		PowerUp powerup(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50), rand() % 7);
+		powerups.emplace_back(powerup);
+		return true;
+	}
 }
 
 //Spawn coin
 //PosX and PosY is a place where we check if we can spawn coin
 //Iteration is a recursion's number
-void Game::SpawnCoinAlgorithm(int PosX, int PosY, int Iteration = 0)
+void Game::SpawnObjectAlgorithm(int PosX, int PosY, ObjectType Object, int Iteration = 0)
 {
 	//In first iteration we check one place
 	if (Iteration == 0)
 	{
-		if (!SpawnCoin(PosX, PosY))
+		if (!SpawnObject(PosX, PosY, Object))
 		{
-			SpawnCoinAlgorithm(PosX, PosY, 1);
+			SpawnObjectAlgorithm(PosX, PosY, Object, 1);
 		}
 	}
 	else
@@ -125,7 +203,7 @@ void Game::SpawnCoinAlgorithm(int PosX, int PosY, int Iteration = 0)
 			BiggerPosX = 32;
 		}
 
-		if (SpawnCoin(BiggerPosX, PosY))
+		if (SpawnObject(BiggerPosX, PosY, Object))
 		{
 			return;
 		}
@@ -136,7 +214,7 @@ void Game::SpawnCoinAlgorithm(int PosX, int PosY, int Iteration = 0)
 			SmallerPosX = 0;
 		}
 
-		if (SpawnCoin(SmallerPosX, PosY))
+		if (SpawnObject(SmallerPosX, PosY, Object))
 		{
 			return;
 		}
@@ -147,7 +225,7 @@ void Game::SpawnCoinAlgorithm(int PosX, int PosY, int Iteration = 0)
 			BiggerPosY = 18;
 		}
 
-		if (SpawnCoin(PosX, BiggerPosY))
+		if (SpawnObject(PosX, BiggerPosY, Object))
 		{
 			return;
 		}
@@ -158,7 +236,7 @@ void Game::SpawnCoinAlgorithm(int PosX, int PosY, int Iteration = 0)
 			SmallerPosY = 0;
 		}
 
-		if (SpawnCoin(PosX, SmallerPosY))
+		if (SpawnObject(PosX, SmallerPosY, Object))
 		{
 			return;
 		}
@@ -172,7 +250,7 @@ void Game::SpawnCoinAlgorithm(int PosX, int PosY, int Iteration = 0)
 		}
 		else
 		{
-			SpawnCoinAlgorithm(PosX, PosY, Iteration);
+			SpawnObjectAlgorithm(PosX, PosY, Object, Iteration);
 		}
 	}
 }
@@ -187,6 +265,7 @@ void Game::Player_CoinsCollision()
 		{
 			Score++;
 			coins.erase(coins.begin() + i);
+			i--;
 		}
 	}
 }
@@ -243,7 +322,219 @@ void Game::Wall_BulletCollision(int wall_number)
 
 		if (distanceSquared < (bullets[i].getBulletSize() * bullets[i].getBulletSize())) {
 			bullets.erase(bullets.begin() + i);
+			i--;
 		}
+	}
+}
+
+//Collision between enemies and walls
+void Game::Wall_EnemesCollision(int wall_number)
+{
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		if (enemies[i]->getEnemyPosition().x > walls[wall_number].getPosition().x - walls[wall_number].getWallSize() / 2 and enemies[i]->getEnemyPosition().x < walls[wall_number].getPosition().x + walls[wall_number].getWallSize() / 2)
+		{
+			if (enemies[i]->getEnemyPosition().y > walls[wall_number].getPosition().y)
+			{
+				if (enemies[i]->getEnemyPosition().y - walls[wall_number].getPosition().y < enemies[i]->getEnemyRadius() + walls[wall_number].getWallSize() / 2)
+				{
+					enemies[i]->setYPos(walls[wall_number].getPosition().y + player.getPlayerRadius() + walls[wall_number].getWallSize() / 2);
+					enemies[i]->ChooseRandomRotation();
+				}
+			}
+			else
+			{
+				if (walls[wall_number].getPosition().y - enemies[i]->getEnemyPosition().y < enemies[i]->getEnemyRadius() + walls[wall_number].getWallSize() / 2)
+				{
+					enemies[i]->setYPos(walls[wall_number].getPosition().y - player.getPlayerRadius() - walls[wall_number].getWallSize() / 2);
+					enemies[i]->ChooseRandomRotation();
+				}
+			}
+		}
+
+		if (enemies[i]->getEnemyPosition().y > walls[wall_number].getPosition().y - walls[wall_number].getWallSize() / 2 and enemies[i]->getEnemyPosition().y < walls[wall_number].getPosition().y + walls[wall_number].getWallSize() / 2)
+		{
+			if (enemies[i]->getEnemyPosition().x > walls[wall_number].getPosition().x)
+			{
+				if (enemies[i]->getEnemyPosition().x - walls[wall_number].getPosition().x < enemies[i]->getEnemyRadius() + walls[wall_number].getWallSize() / 2)
+				{
+					enemies[i]->setXPos(walls[wall_number].getPosition().x + player.getPlayerRadius() + walls[wall_number].getWallSize() / 2);
+					enemies[i]->ChooseRandomRotation();
+				}
+			}
+			else
+			{
+				if (walls[wall_number].getPosition().x - enemies[i]->getEnemyPosition().x < enemies[i]->getEnemyRadius() + walls[wall_number].getWallSize() / 2)
+				{
+					enemies[i]->setXPos(walls[wall_number].getPosition().x - player.getPlayerRadius() - walls[wall_number].getWallSize() / 2);
+					enemies[i]->ChooseRandomRotation();
+				}
+			}
+		}
+	}
+}
+
+void Game::Player_BulletsCollision(int* bulletNum)
+{
+	if (sqrt(pow(bullets[*bulletNum].getBulletPosition().x - player.getPosition().x, 2) +
+		pow(bullets[*bulletNum].getBulletPosition().y - player.getPosition().y, 2)) <
+		player.getPlayerRadius() + bullets[*bulletNum].getBulletSize())
+	{
+		player.TakeDamage(bullets[*bulletNum].getDamage());
+		bullets.erase(bullets.begin() + *bulletNum);
+		*bulletNum--;
+	}
+}
+
+void Game::Enemies_BulletsCollision(int* bulletNum)
+{
+	for (int x = 0; x < enemies.size(); x++)
+	{
+		if (sqrt(pow(bullets[*bulletNum].getBulletPosition().x - enemies[x]->getEnemyPosition().x, 2) +
+			pow(bullets[*bulletNum].getBulletPosition().y - enemies[x]->getEnemyPosition().y, 2)) <
+			enemies[x]->getEnemyRadius() + bullets[*bulletNum].getBulletSize())
+		{
+			enemies[x]->TakeDamage(bullets[*bulletNum].getDamage());
+			if (enemies[x]->getEnemyHealth() <= 0)
+			{
+				enemies.erase(enemies.begin() + x);
+				x--;
+			}
+			else
+			{
+				//if enemy not die then it will rotate and check from where bullet comes (because bullets has player's position when he shot, enemy will go in that direction)
+				enemies[x]->RotateToPoint(bullets[*bulletNum].getShooterPosition());
+			}
+			bullets.erase(bullets.begin() + *bulletNum);
+			*bulletNum--;
+		}
+	}
+}
+
+void Game::Player_PowerupsCollision()
+{
+	for (int i = 0; i < powerups.size(); i++)
+	{
+		if(sqrt(pow(player.getPosition().x - powerups[i].getPowerupPos().x, 2) +
+			pow(player.getPosition().y - powerups[i].getPowerupPos().y, 2)) <
+				powerups[i].getRadius() + player.getPlayerRadius())
+		{
+			if (powerups[i].getType() == 0)
+			{
+				player.GrantPlayerSpeed();
+			}
+			else if (powerups[i].getType() == 1)
+			{
+				player.GrantPlayerQuickfire();
+			}
+			else if (powerups[i].getType() == 2)
+			{
+				//check if player's health is > 0 to not rise him from dead by accident
+				if (player.getHealth() > 0)
+				{
+					player.RestoreHealth();
+				}
+			}
+
+			powerups.erase(powerups.begin() + i);
+			i--;
+		}
+	}
+}
+
+//This function will check if enemy's vision is blocked by walls
+//
+void Game::EnemyVisionLimitedbyWalls(int enemyNum)
+{	
+	//if enemy and player are on the same x position
+	if (enemies[enemyNum]->getEnemyPosition().x == player.getPosition().x)
+	{
+		for (int i = 0; i < walls.size(); i++)
+		{
+			//check if there is wall between enemy and player
+			if ((walls[i].getPosition().x > enemies[enemyNum]->getEnemyPosition().x and walls[i].getPosition().x < player.getPosition().x) or
+				(walls[i].getPosition().x < enemies[enemyNum]->getEnemyPosition().x and walls[i].getPosition().x > player.getPosition().x))
+			{
+				//check if wall is in the same y level (or at least part of the wall)
+				if ((walls[i].getPosition().y + walls[i].getWallSize()/2) <= player.getPosition().y and (walls[i].getPosition().y - walls[i].getWallSize()/2) >= player.getPosition().y)
+				{
+					return;
+				}
+			}
+		}
+	}
+	else
+	{
+		float a = (player.getPosition().y - enemies[enemyNum]->getEnemyPosition().y) / (player.getPosition().x - enemies[enemyNum]->getEnemyPosition().x);
+
+		//in case if a is too close to 0 and game could round it to 0
+		if (std::abs(a) < 0.0001)
+		{
+			if (a < 0)
+			{
+				a = -0.0001;
+			}
+			else
+			{
+				a = 0.0001;
+			}
+		}
+
+		float b = enemies[enemyNum]->getEnemyPosition().y - a * enemies[enemyNum]->getEnemyPosition().x;
+
+		for (int i = 0; i < walls.size(); i++)
+		{
+			//Only walls closer than player needs to be checked
+			if (sqrt(pow(walls[i].getPosition().x - enemies[enemyNum]->getEnemyPosition().x, 2) + pow(walls[i].getPosition().y - enemies[enemyNum]->getEnemyPosition().y, 2)) >=
+				sqrt(pow(player.getPosition().x - enemies[enemyNum]->getEnemyPosition().x, 2) + pow(player.getPosition().y - enemies[enemyNum]->getEnemyPosition().y, 2)))
+			{
+				continue;
+			}
+
+			//get X point
+			float wallX = walls[i].getPosition().x - walls[i].getWallSize()/2;
+			//Calculate Y on y = a*x + b with wallX
+			float wallY = a * wallX + b;
+			//if Y is on wall's side than we have a collision
+			if (wallY >= walls[i].getPosition().y - walls[i].getWallSize()/2 and
+				wallY <= walls[i].getPosition().y + walls[i].getWallSize()/2)
+			{
+				return;
+			}
+
+			wallX = walls[i].getPosition().x + walls[i].getWallSize()/2;
+			wallY = a * wallX + b;
+			if (wallY >= walls[i].getPosition().y - walls[i].getWallSize() / 2 and
+				wallY <= walls[i].getPosition().y + walls[i].getWallSize() / 2)
+			{
+				return;
+			}
+
+			wallY = walls[i].getPosition().y - walls[i].getWallSize()/2;
+			wallX = (wallY - b)/a;
+			if (wallX >= walls[i].getPosition().x - walls[i].getWallSize() / 2 and
+				wallX <= walls[i].getPosition().x + walls[i].getWallSize() / 2)
+			{
+				return;
+			}
+
+			wallY = walls[i].getPosition().y + walls[i].getWallSize() / 2;
+			wallX = (wallY - b)/a;
+			if (wallX >= walls[i].getPosition().x - walls[i].getWallSize() / 2 and
+				wallX <= walls[i].getPosition().x + walls[i].getWallSize() / 2)
+			{
+				return;
+			}
+		}
+	}
+
+	//when enemy sees player than rotate and shoot
+	enemies[enemyNum]->EnemySawPlayer();
+	enemies[enemyNum]->RotateToPoint(player.getPosition());
+	if (enemies[enemyNum]->getCooldown() <= 0)
+	{
+		bullets.emplace_back(enemies[enemyNum]->getEnemyPosition(), player.getPosition(), WindowXSize, WindowYSize, enemies[enemyNum]->getDamage(), false, 400);
+		enemies[enemyNum]->ResetCooldown();
 	}
 }
 
@@ -313,17 +604,9 @@ void Game::input()
 			{
 				if (TimeSincePlayerShoot > player.getCooldown())    //if Time since last player shoot is greater than cooldown than player is allowed to shoot
 				{
-					sf::Vector2f Pos = player.getPosition();
-					bullets.emplace_back(Pos, CurrentMousePos, WindowXSize, WindowYSize);
+					bullets.emplace_back(player.getPosition(), CurrentMousePos, WindowXSize, WindowYSize, player.getDamage(), true, 400);
 					TimeSincePlayerShoot = 0.0f;   //reset time
 				}
-			}
-
-			//FOR TEST ONLY
-			if (keyPressed->button == sf::Mouse::Button::Middle)
-			{
-				Score = 10;
-				player.TakeDamage(101);
 			}
 		}
 
@@ -345,10 +628,28 @@ void Game::update()
 {
 	//Update Time and Mouse Position
 	float dt = deltaClock.restart().asSeconds();
+	//printf("%f\n", dt);
 	CurrentMousePos = window.mapPixelToCoords(sf::Mouse::getPosition());
 
 	//Player move
 	player.TransformPlayer(CurrentMousePos, WindowXSize, WindowYSize, dt, MovePlayer);
+
+	//Enemies move
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->LowerCooldown(dt);
+		bool IsItSee = enemies[i]->IsEnemySeePlayer(player.getPosition());
+
+		//if enemy can see player we check if there is any wall between enemy or player
+		if (IsItSee == true)
+		{
+			//this function check if wall blocks enemy or not
+			EnemyVisionLimitedbyWalls(i);
+		}
+
+		//move enemy
+		enemies[i]->MoveEnemy(WindowXSize, WindowYSize, dt);
+	}
 
 	//bullets move
 	for (int i = 0; i < bullets.size(); i++)
@@ -357,31 +658,54 @@ void Game::update()
 	}
 
 	//check if bullets is outside map - if yes than erase
+	//and also check if it has collision with players or enemies
 	for (int i = 0; i < bullets.size(); i++)
 	{
+		//check if bullets are in game map
 		if (bullets[i].CheckBullet())
 		{
 			bullets.erase(bullets.begin() + i);
+			i--;
+		}
+		else
+		{
+			//check collision with enemies if IsPlayer is true
+			//else check collision with player
+			if (bullets[i].getIsPlayers() == true)
+			{
+				Enemies_BulletsCollision(&i);
+			}
+			else
+			{
+				Player_BulletsCollision(&i);
+			}
 		}
 	}
 
-	CoinSpawningControl(dt);
+	//before implementing heal power up you need to check if player has 0 or less hp unless you want to rise him from dead
+	Player_PowerupsCollision();
+
+	//Collision with coins
+	Player_CoinsCollision();
+
+	ObjectSpawningControl(dt);
 
 	//Check walls collision
 	for (int i = 0; i < walls.size(); i++)
 	{
 		Wall_PlayerCollision(i);
 		Wall_BulletCollision(i);
+		Wall_EnemesCollision(i);
 	}
-
-	//Collision with coins
-	Player_CoinsCollision();
 
 	//Check if player is alive
 	if (player.getHealth() <= 0)
 	{
 		changeState = true;
 	}
+
+	player.CountQuickfireTimer(dt);
+	player.CountSpeedTimer(dt);
 
 	//Increase time since player shoot
 	TimeSincePlayerShoot = TimeSincePlayerShoot + dt;
@@ -396,15 +720,29 @@ void Game::render()
 	{
 		coins[i].DrawCoin(window);
 	}
+
+	for (int i = 0; i < powerups.size(); i++)
+	{
+		powerups[i].drawPowerUp(window);
+	}
+
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		bullets[i].DrawBullet(window);
 	}
+
 	for (int i = 0; i < walls.size(); i++)
 	{
 		walls[i].DrawWall(window);
 	}
+
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->drawEnemy(window);
+	}
+
 	player.DrawPlayer(window);
+	
 	ImGuiRender();
 	ImGui::SFML::Render(window);
 	window.display();

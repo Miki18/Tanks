@@ -39,6 +39,15 @@
     <Filter Include="Classes\Wall">
       <UniqueIdentifier>{c6c1dbad-b78a-46b0-84df-fe581ee48117}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Enemy">
+      <UniqueIdentifier>{719634a2-39cb-4a53-8abc-2d73c25c33c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Saved">
+      <UniqueIdentifier>{73af9323-43e2-4ce5-98ad-679ff0a6d606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\PowerUps">
+      <UniqueIdentifier>{62f0f732-ac35-4f17-9f78-5acb7c23c521}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -78,6 +87,21 @@
     <ClCompile Include="Classes\Objects\Wall.cpp">
       <Filter>Classes\Wall</Filter>
     </ClCompile>
+    <ClCompile Include="Classes\Objects\Enemies\BaseEnemy.cpp">
+      <Filter>Classes\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\Enemies\NormalEnemy.cpp">
+      <Filter>Classes\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\Enemies\FastEnemy.cpp">
+      <Filter>Classes\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\Enemies\BigEnemy.cpp">
+      <Filter>Classes\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Objects\PowerUp.cpp">
+      <Filter>Classes\PowerUps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -116,7 +140,6 @@
     <ClInclude Include="Classes\Objects\Player.h">
       <Filter>Classes\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Headers.h" />
     <ClInclude Include="Classes\Objects\Bullet.h">
       <Filter>Classes\Bullet</Filter>
     </ClInclude>
@@ -125,6 +148,24 @@
     </ClInclude>
     <ClInclude Include="Classes\Objects\Wall.h">
       <Filter>Classes\Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\Enemies\BaseEnemy.h">
+      <Filter>Classes\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers.h">
+      <Filter>HeaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\Enemies\NormalEnemy.h">
+      <Filter>Classes\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\Enemies\FastEnemy.h">
+      <Filter>Classes\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\Enemies\BigEnemy.h">
+      <Filter>Classes\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Objects\PowerUp.h">
+      <Filter>Classes\PowerUps</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +180,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Saved\Rank" />
+    <Text Include="Saved\Rank">
+      <Filter>Saved</Filter>
+    </Text>
   </ItemGroup>
 </Project>

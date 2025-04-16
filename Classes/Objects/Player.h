@@ -17,6 +17,10 @@ class Player
 		int Health;
 		float Cooldown;
 		float PlayerSpeed;
+		int Dmg;
+
+		float SpeedTimer = 0;
+		float QuickfireTimer = 0;
 
 		//Variables for movement
 		sf::Vector2f Direction;
@@ -32,6 +36,13 @@ class Player
 		void DrawPlayer(sf::RenderWindow& window);
 		void TransformPlayer(sf::Vector2f MousePos, int WindowXSize, int WindowYSize, float dt, bool IsPlayerMove);
 		void TakeDamage(int dmg);
+		void CountSpeedTimer(float dt);
+		void CountQuickfireTimer(float dt);
+
+		//PowerUps functions
+		void GrantPlayerSpeed();
+		void GrantPlayerQuickfire();
+		void RestoreHealth();
 
 		//Setters
 		void SetPlayerXPosition(float value);
@@ -42,4 +53,5 @@ class Player
 		int getHealth();
 		float getCooldown();
 		float getPlayerRadius();
+		int getDamage();
 };

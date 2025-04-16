@@ -1,17 +1,33 @@
 #include "Bullet.h"
 
 //Constructor
-Bullet::Bullet(sf::Vector2f TankPosition, sf::Vector2f MousePos, int WindowXSize, int WindowYSize)
+Bullet::Bullet(sf::Vector2f TankPosition, sf::Vector2f MousePos, int WindowXSize, int WindowYSize, int Dmg, bool IsPlayers, float BulletSpeed)
 {
 	//Visual
 	circle.setRadius(9.0f);
 	circle.setOutlineThickness(2.0f);
 	circle.setOrigin(circle.getGeometricCenter());
-	circle.setFillColor(sf::Color::Yellow);
 	circle.setOutlineColor(sf::Color::Black);
 
+	//Window X and Y size is needed to check if bullet is outside or inside the map
+	//Dmg is a damage that bullet gives when it hit into target
+	//Bool IsPlayers return info if this is player's or enemy's bullet (if true it's player's)
 	this->WindowXSize = WindowXSize;
 	this->WindowYSize = WindowYSize;
+	this->BulletDmg = Dmg;
+	this->IsPlayers = IsPlayers;
+	this->BulletSpeed = BulletSpeed;
+	this->ShooterPosition = TankPosition;
+
+	//Player's bullets are yellow
+	if (IsPlayers == true)
+	{
+		circle.setFillColor(sf::Color::Yellow);
+	}
+	else
+	{
+		circle.setFillColor(sf::Color::Red);
+	}
 
 	//We set bullet's starter position
 	CalculateDirection(TankPosition, MousePos);
@@ -62,4 +78,19 @@ sf::Vector2f Bullet::getBulletPosition()
 float Bullet::getBulletSize()
 {
 	return 11.0f;
+}
+
+bool Bullet::getIsPlayers()
+{
+	return IsPlayers;
+}
+
+int Bullet::getDamage()
+{
+	return BulletDmg;
+}
+
+sf::Vector2f Bullet::getShooterPosition()
+{
+	return ShooterPosition;
 }
