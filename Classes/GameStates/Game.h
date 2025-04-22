@@ -70,12 +70,16 @@ private:
 
 	//Collision functions
 	void Player_CoinsCollision();
+
 	void Wall_PlayerCollision(int wall_number);
 	void Wall_BulletCollision(int wall_number);
 	void Wall_EnemesCollision(int wall_number);
+
 	void Player_BulletsCollision(int* bulletNum);
 	void Enemies_BulletsCollision(int* bulletNum);
+
 	void Player_PowerupsCollision();
+
 	void EnemyVisionLimitedbyWalls(int enemyNum);
 
 	//ImGui Part

@@ -148,7 +148,8 @@ bool Game::SpawnObject(int PosX, int PosY, ObjectType Object)
 		float dx = player.getPosition().x - 25 + PosX * 50;
 		float dy = player.getPosition().y - 25 + PosY * 50;
 
-		if (sqrt(dx * dx + dy * dy) < 150)
+		//the distance can't be less than 200
+		if (sqrt(dx * dx + dy * dy) < 200)
 		{
 			return false;
 		}
@@ -382,7 +383,7 @@ void Game::Player_BulletsCollision(int* bulletNum)
 	{
 		player.TakeDamage(bullets[*bulletNum].getDamage());
 		bullets.erase(bullets.begin() + *bulletNum);
-		*bulletNum--;
+		*bulletNum = *bulletNum - 1;
 	}
 }
 
@@ -398,7 +399,7 @@ void Game::Enemies_BulletsCollision(int* bulletNum)
 			if (enemies[x]->getEnemyHealth() <= 0)
 			{
 				enemies.erase(enemies.begin() + x);
-				x--;
+				x = x - 1;
 			}
 			else
 			{
@@ -406,7 +407,7 @@ void Game::Enemies_BulletsCollision(int* bulletNum)
 				enemies[x]->RotateToPoint(bullets[*bulletNum].getShooterPosition());
 			}
 			bullets.erase(bullets.begin() + *bulletNum);
-			*bulletNum--;
+			*bulletNum = *bulletNum - 1;
 		}
 	}
 }
@@ -443,7 +444,6 @@ void Game::Player_PowerupsCollision()
 }
 
 //This function will check if enemy's vision is blocked by walls
-//
 void Game::EnemyVisionLimitedbyWalls(int enemyNum)
 {	
 	//if enemy and player are on the same x position

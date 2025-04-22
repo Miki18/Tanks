@@ -106,7 +106,7 @@ void Menu::ShowRanks(float YPos, float height)
 void Menu::ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string WindowTitle, std::string WindowText, int LevelNumber = 1)
 {
 	//Button Pattern
-
+	
 	//ImGui WindowSettings
 	ImGui::SetNextWindowPos(WindowPosition);
 	ImGui::Begin(WindowTitle.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
@@ -146,13 +146,14 @@ void Menu::MainMenuScheme()
 {
 	float YPosition = 100;
 	YPosition += ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
-	ButtonPattern(ImVec2{ WindowXSize/2 - ButtonDefaultXSize/2, YPosition }, ShowScreen::Levels, "PlayButton", "Play");
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Levels, "PlayButton", "Play");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Ranks, "Ranks", "Ranks");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Options, "Options", "Options");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::AreYouSure, "ExitButton", "Exit");
+	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.0.1");
 }
 
 void Menu::AreYouSureScheme()
