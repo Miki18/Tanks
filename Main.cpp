@@ -1,3 +1,6 @@
+//	Tanks
+//	Game was made by Miki18
+// 
 //includes; Headers has include from imgui, sfml and others that are needed in different files
 //Menu.h and Game.h are classes
 #include "Headers.h"
