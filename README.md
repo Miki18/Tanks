@@ -1,7 +1,7 @@
 # Tanks
 ## About Project
 
-Tanks is a simple game made in cpp. Player has to move tank and collect points. If the player gathers enough points, the game will rank player on the leaderboard. During game player will have to fight with enemies, who will try to kill him. Game has simple 2D graphic based on sfml's shapes.
+"Tanks" is a simple game made in cpp. Player has to move tank and collects points. If the player gathers enough points, the game will rank player on the leaderboard. During game player will have to fight with enemies, who will try to destroy player's tank. Game has simple 2D graphic based on sfml's shapes.
 
 ## How to run this game
 
