@@ -28,6 +28,9 @@ private:
 	int& level;
 	int& Score;
 
+	//Music
+	sf::Music music;
+
 	//Window constant values
 	const int WindowXSize = 1600;
 	const int WindowYSize = 900;

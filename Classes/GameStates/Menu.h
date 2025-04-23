@@ -30,6 +30,9 @@ class Menu
 		//Time
 		sf::Clock deltaClock;
 
+		//Music
+		sf::Music music;
+
 		//Constants
 		const int WindowXSize = 1600;
 		const int WindowYSize = 900;

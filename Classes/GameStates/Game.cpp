@@ -576,6 +576,10 @@ Game::Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score) 
 	CoinText.setSmooth(false);
 	//imgui
 	ImGui::GetIO().FontGlobalScale = 1.5;
+	//Music
+	music.openFromFile("Music/TheBuilder.mp3");
+	music.setLooping(true);
+	music.play();
 }
 
 

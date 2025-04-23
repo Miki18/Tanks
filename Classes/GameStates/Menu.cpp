@@ -153,7 +153,7 @@ void Menu::MainMenuScheme()
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Options, "Options", "Options");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::AreYouSure, "ExitButton", "Exit");
-	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.0.1");
+	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.0.2");
 }
 
 void Menu::AreYouSureScheme()
@@ -372,6 +372,11 @@ Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLas
 	titlesprite.setPosition(sf::Vector2f(WindowXSize/2 - 250, 40));
 	//set font scale
 	ImGui::GetIO().FontGlobalScale = 5;
+
+	//Start music
+	music.openFromFile("Music/Polkka.mp3");
+	music.setLooping(true);
+	music.play();
 
 	LoadRanks();
 
