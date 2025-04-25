@@ -5,7 +5,7 @@
 
 ## How to run this game
 
-1. The game will be avaible for free on itchio. Dowload it -> unzip -> run Tanks.exe.
+1. The game is avaible for free on itchio [4](#link4). Dowload it -> unzip -> run Tanks.exe.
    The game may require some additional libraries. They should be delivered in .zip file. In case they won't work, you will need to instal microsoft visual c++ redistributable package (64-bit) [1](#link1) .
 2. Download this repository as .zip and unzip it. Then run Tanks.sln in Visual Studio 2022. You will also need to create Music folder and add .mp3 files - more in [Music](#music) .
 
@@ -82,3 +82,4 @@ Songs used: Polkka [2](#link2) and The Builder [3](#link3)
 <span id="link1">[1]</span> microsoft visual c++ redistributable package (64-bit) https://aka.ms/vs/17/release/vc_redist.x64.exe <br>
 <span id="link2">[2]</span> Polkka https://youtu.be/JbspWYbuxgE?si=Jevp-t-NAqB3K1Mb <br>
 <span id="link3">[3]</span> The Builder https://youtu.be/G6G3gB7DksA?si=RjfAjZmqEckYDM9p <br>
+<span id="link4">[4]</span> miki18games.itch.io/tanks <br>
