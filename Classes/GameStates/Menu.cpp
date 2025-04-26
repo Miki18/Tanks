@@ -163,7 +163,7 @@ void Menu::MainMenuScheme()
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Options, "Options", "Options");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::AreYouSure, "ExitButton", "Exit");
-	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.1.0");
+	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.1.0a");
 }
 
 void Menu::AreYouSureScheme()

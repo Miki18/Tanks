@@ -101,7 +101,7 @@ void Game::ObjectSpawningControl(float dt)
 
 		TimeUntilEnemySpawn = NextEnemySpawnAfter;
 
-		if (NextEnemySpawnAfter >= 4.1f)      //new enemy will spawn faster
+		if (NextEnemySpawnAfter >= 4.2f)      //new enemy will spawn faster
 		{
 			NextEnemySpawnAfter = NextEnemySpawnAfter - 0.2f;
 		}
