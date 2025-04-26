@@ -178,6 +178,15 @@
     <Image Include="Resources\coin.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\balls.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\fast.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\heal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Saved\Rank">

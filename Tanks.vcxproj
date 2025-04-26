@@ -181,7 +181,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\background.png" />
+    <Image Include="Resources\balls.png" />
     <Image Include="Resources\coin.png" />
+    <Image Include="Resources\fast.png" />
+    <Image Include="Resources\heal.png" />
     <Image Include="Resources\Title.png" />
   </ItemGroup>
   <ItemGroup>

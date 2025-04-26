@@ -123,7 +123,7 @@ bool BaseEnemy::IsEnemySeePlayer(sf::Vector2f PlayerPos)
 		return true;
 	}
 	//else do raycasting
-	else if (DistanceToPlayer < 500)
+	else if (DistanceToPlayer < 750)
 	{
 		//Calculate normalized Vector from enemy to player
 		sf::Vector2f ToPlayer = { (PlayerPos.x - circle.getPosition().x)/DistanceToPlayer, (PlayerPos.y - circle.getPosition().y)/DistanceToPlayer};
@@ -213,6 +213,11 @@ float BaseEnemy::getCooldown()
 float BaseEnemy::getDamage()
 {
 	return dmg;
+}
+
+float BaseEnemy::getMaxHealth()
+{
+	return maxHealth;
 }
 
 void BaseEnemy::setXPos(float X)

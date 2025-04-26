@@ -6,7 +6,7 @@ class Coin
 	private:
 		//Visual
 		sf::Texture tex;
-		sf::Sprite sprite;
+		sf::CircleShape circle;
 
 	public:
 		//Constructor
@@ -15,6 +15,7 @@ class Coin
 		//Draw function
 		void DrawCoin(sf::RenderWindow& window);
 
-		//get position
+		//getters
 		sf::Vector2f getPosition();
+		float getRadius();
 };

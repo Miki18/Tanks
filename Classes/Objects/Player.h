@@ -5,7 +5,7 @@ class Player
 {
 	public:
 		//Player constructor
-		Player(sf::Vector2f PlayerPos);
+		Player(sf::Vector2f PlayerPos, int G, int B);
 
 	private:
 

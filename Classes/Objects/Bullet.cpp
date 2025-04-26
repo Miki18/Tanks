@@ -45,6 +45,11 @@ void Bullet::CalculateDirection(sf::Vector2f BulletPosition, sf::Vector2f MouseP
 {
 	Direction = { MousePosition.x - BulletPosition.x, MousePosition.y - BulletPosition.y };
 	float length = sqrt((Direction.x * Direction.x) + (Direction.y * Direction.y));
+	//In case length == 0 then choose very small value != 0
+	if (length == 0)
+	{
+		length = 0.00001f;
+	}
 	Direction = Direction / length;
 }
 

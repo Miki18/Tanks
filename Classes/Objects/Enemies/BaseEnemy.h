@@ -11,6 +11,7 @@ class BaseEnemy
 
 		//stats
 		//Default values = Normal Enemy values
+		float maxHealth = 50.0f;
 		float speed = 150.0f;
 		int health = 50;
 		float cooldown = 0.75f;
@@ -57,6 +58,7 @@ class BaseEnemy
 		virtual float getDistanceToPlayer();
 		virtual float getCooldown();
 		virtual float getDamage();
+		virtual float getMaxHealth();
 
 		//setters
 		virtual void setXPos(float X);

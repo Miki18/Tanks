@@ -140,6 +140,16 @@ void Menu::TextPattern(ImVec2 TextPosition, std::string TextTitle, std::string T
 	ImGui::End();
 }
 
+void Menu::BackgroundPattern(ImVec2 BackgroundPosition, ImVec2 BackgrondSize, std::string Title)
+{
+	//Partially transparent background pattern
+	ImGui::SetNextWindowPos(BackgroundPosition);
+	ImGui::SetNextWindowSize(BackgrondSize);
+	ImGui::SetNextWindowBgAlpha(0.45);
+	ImGui::Begin("Backgrouynd", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus);
+	ImGui::End();
+}
+
 //Screen design
 //Each screen use patterns with appropriate parameters
 void Menu::MainMenuScheme()
@@ -153,7 +163,7 @@ void Menu::MainMenuScheme()
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Options, "Options", "Options");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::AreYouSure, "ExitButton", "Exit");
-	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.0.2");
+	TextPattern(ImVec2{ 0, 825 }, "Version", "v.1.1.0");
 }
 
 void Menu::AreYouSureScheme()
@@ -168,9 +178,12 @@ void Menu::AreYouSureScheme()
 
 void Menu::CreditsScheme()
 {
+	BackgroundPattern(ImVec2(static_cast<float>(WindowXSize / 2) - 550, 175), ImVec2(1100, 425), "Background");
+
 	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 200 }, "Creator", "This game was made by Miki18");
-	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 450, 300 }, "Music", "Music from Kevin MacLeod");
-	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 550, 400 }, "Title", "Title was generated with TextCraft");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 300 }, "Music", "Music is from Kevin MacLeod");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 400 }, "Sound", "Sound is from SOUNDFX FREE");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 500 }, "Title", "Title is from TextCraft");
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
 }
 
@@ -186,26 +199,45 @@ void Menu::OptionsScheme()
 	YPosition += ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Credits, "Credits", "Credits");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
-	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Controls, "Controls", "Controls");
+	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Settings, "Settings", "Settings");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::Tips, "Tips", "Tips");
 	YPosition += ButtonDefaultYSize + ((WindowYSize - 100) - (ButtonDefaultYSize * 4)) / 5;
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, YPosition }, ShowScreen::MainMenu, "Back", "Back");
 }
 
-void Menu::ControlsScheme()
+void Menu::SettingsScheme()
 {
 	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 200, 200 }, "Movement", "RMB - Move");
 	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 200, 300 }, "Shoot", "LMB - Shoot");
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
+
+	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(WindowXSize / 2) - 250, 450));
+	ImGui::Begin("CheckBox", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_AlwaysAutoResize);
+	if (ImGui::Checkbox("Music", &RunMusic))
+	{
+		if (RunMusic == true)
+		{
+			music.play();
+		}
+		else
+		{
+			music.stop();
+		}
+	}
+	ImGui::SameLine();
+	ImGui::Checkbox("Sound", &RunSound);
+	ImGui::End();
 }
 
 void Menu::TipsScheme()
 {
-	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 750, 200 }, "YourTank", "Your tank is green and has yellow bullets");
-	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 650, 300 }, "EnemyTank", "Enemy tank is red and has red bullets");
-	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 750, 400 }, "PowerUps", "Round Transparent objects are Power Ups");
-	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 600, 500 }, "Points", "Yellow objects with '1' are points");
+	BackgroundPattern(ImVec2(static_cast<float>(WindowXSize / 2) - 550, 175), ImVec2(1100, 425), "Background");
+
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 200 }, "YourTank", "Your tank has yellow bullets");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 300 }, "EnemyTank", "Enemy tanks have red bullets");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 400 }, "PowerUps", "Round objects are Power Ups");
+	TextPattern(ImVec2{ static_cast<float>(WindowXSize / 2) - 500, 500 }, "Points", "Objects with '1' are points");
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::Options, "Back", "Back");
 }
 
@@ -223,6 +255,19 @@ void Menu::LevelsScheme()
 	ButtonPattern(ImVec2{ XPosition, 450 }, ShowScreen::Game, "Level4", "Level 4", 4);
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 600 }, ShowScreen::Game, "Random", "Random", 5);
 	ButtonPattern(ImVec2{ WindowXSize / 2 - ButtonDefaultXSize / 2, 750 }, ShowScreen::MainMenu, "Back", "Back");
+
+	//Choose color
+	ImGui::SetNextWindowSize(ImVec2(200, 250));
+	ImGui::SetNextWindowPos(ImVec2(0, 450));
+	ImGui::SetNextWindowBgAlpha(0.0);
+	ImGui::Begin("Choose Col", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::SliderInt(" ", &G, 0, 255, "G");
+	ImGui::SliderInt("  ", &B, 0, 255, "B");
+	ImGui::End();
+
+	window.draw(rectangle);
+	circle.setFillColor(sf::Color(0, (uint8_t)G, (uint8_t)B, 255));   //update color
+	window.draw(circle);
 }
 
 void Menu::SaveScoreScheme()
@@ -304,7 +349,6 @@ void Menu::SaveScoreScheme()
 					file << ranks[0][i] << " " << ranks[1][i] << " " << ranks[2][i] << "\n";
 				}
 				file.close();
-				printf("Chce");
 				memset(PlayerName, 0, sizeof(PlayerName));
 				showscreen = ShowScreen::End;
 			}
@@ -343,9 +387,9 @@ void Menu::ImGuiDraw()
 	{
 		OptionsScheme();
 	}
-	else if (showscreen == ShowScreen::Controls)
+	else if (showscreen == ShowScreen::Settings)
 	{
-		ControlsScheme();
+		SettingsScheme();
 	}
 	else if (showscreen == ShowScreen::Tips)
 	{
@@ -366,17 +410,12 @@ void Menu::ImGuiDraw()
 }
 
 //constructor
-Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLastScore, bool MainMenu): window(window), changeState(changeState), level(level), YourLastScore(YourLastScore), backgroundtex("Resources/background.png"), backgroundsprite(backgroundtex), titletex("Resources/Title.png"), titlesprite(titletex)
+Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLastScore, bool MainMenu, int& G, int& B, bool& RunMusic, bool& RunSound): window(window), changeState(changeState), level(level), YourLastScore(YourLastScore), backgroundtex("Resources/background.png"), backgroundsprite(backgroundtex), titletex("Resources/Title.png"), titlesprite(titletex), G(G), B(B), RunMusic(RunMusic), RunSound(RunSound)
 {
 	//set title sprite position
 	titlesprite.setPosition(sf::Vector2f(WindowXSize/2 - 250, 40));
 	//set font scale
 	ImGui::GetIO().FontGlobalScale = 5;
-
-	//Start music
-	music.openFromFile("Music/Polkka.mp3");
-	music.setLooping(true);
-	music.play();
 
 	LoadRanks();
 
@@ -384,6 +423,32 @@ Menu::Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLas
 	style.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 0.8f);
 	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
 	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
+
+	//Set visualization parameters
+	//This is very similar to this what is in Player class constructor
+	circle.setRadius(20.0f);
+	circle.setFillColor(sf::Color{ 0,(uint8_t) G, (uint8_t) B, 255 });
+	circle.setOutlineThickness(5.0f);
+	circle.setOutlineColor(sf::Color::Black);
+	circle.setOrigin(circle.getGeometricCenter());
+	circle.setPosition(sf::Vector2f(80, 400));
+
+	//15 and 40 were swapped to change rotation of barrel
+	rectangle.setSize(sf::Vector2f(15, 40));
+	rectangle.setFillColor(sf::Color{ 128, 128, 128, 255 });
+	rectangle.setOutlineThickness(5.0f);
+	rectangle.setOutlineColor(sf::Color::Black);
+	rectangle.setOrigin(sf::Vector2f(7.5, 0));
+	rectangle.setPosition(sf::Vector2f(80, 400));
+
+	//Start music
+	music.openFromFile("Music/Polkka.mp3");
+	music.setLooping(true);
+
+	if (RunMusic == true)
+	{
+		music.play();
+	}
 
 	//Choose starter screen
 	if (MainMenu)

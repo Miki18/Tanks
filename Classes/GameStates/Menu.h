@@ -13,7 +13,7 @@ class Menu
 			Credits,      //Shows credits
 			Ranks,         //Show rank
 			Options,       //Options
-			Controls,      //Show how to control your tank
+			Settings,      //Show how to control your tank and allow to turn on/off music
 			Tips,          //advice for player/how to play
 			Levels,        //select level
 			SaveScore,      //player will see it when he gets high score (when he will be in top 10)
@@ -32,6 +32,8 @@ class Menu
 
 		//Music
 		sf::Music music;
+		bool& RunMusic;
+		bool& RunSound;
 
 		//Constants
 		const int WindowXSize = 1600;
@@ -52,6 +54,12 @@ class Menu
 		//We start from MainMenu
 		ShowScreen showscreen = MainMenu;
 
+		//For color visualization
+		sf::CircleShape circle;
+		sf::RectangleShape rectangle;
+		int& G;
+		int& B;
+
 		//Load ranks when starts Menu
 		void LoadRanks();
 		std::string ranks[3][10];
@@ -61,13 +69,14 @@ class Menu
 		//Patterns
 		void ButtonPattern(ImVec2 WindowPosition, ShowScreen NextScreen, std::string Title, std::string WindowText, int LevelNumber);
 		void TextPattern(ImVec2 TextPosition, std::string TextTitle, std::string Text);
+		void BackgroundPattern(ImVec2 BackgroundPosition, ImVec2 BackgrondSize, std::string Title);
 		//Screen design
 		void MainMenuScheme();
 		void AreYouSureScheme();
 		void CreditsScheme();
 		void RanksScheme();
 		void OptionsScheme();
-		void ControlsScheme();
+		void SettingsScheme();
 		void TipsScheme();
 		void LevelsScheme();
 		void SaveScoreScheme();
@@ -78,7 +87,7 @@ class Menu
 
 	public:
 		//constructor
-		Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLastScore, bool MainMenu);
+		Menu(sf::RenderWindow& window, bool& changeState, int& level, int& YourLastScore, bool MainMenu, int& G, int& B, bool& RunMusic, bool& RunSound);
 
 		//input, update, render
 		void input();

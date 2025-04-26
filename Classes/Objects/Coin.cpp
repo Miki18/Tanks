@@ -2,21 +2,28 @@
 
 //Constructor
 //Game class gives texture when it creates object
-Coin::Coin(sf::Texture& tex, sf::Vector2f pos) : tex(tex), sprite(tex)
+Coin::Coin(sf::Texture& tex, sf::Vector2f pos) : tex(tex)
 {
-	sprite.setScale(sf::Vector2f(0.08, 0.1));
-	sprite.setOrigin(sf::Vector2f(250 , 300));
-	sprite.setPosition(pos);
+	circle.setTexture(&tex);
+	circle.setRadius(20);
+	circle.setScale(sf::Vector2f(0.9, 1.1));
+	circle.setOrigin(circle.getGeometricCenter());
+	circle.setPosition(pos);
 }
 
 //Draw function
 void Coin::DrawCoin(sf::RenderWindow& window)
 {
-	window.draw(sprite);
+	window.draw(circle);
 }
 
 //get Position
 sf::Vector2f Coin::getPosition()
 {
-	return sprite.getPosition();
+	return circle.getPosition();
+}
+
+float Coin::getRadius()
+{
+	return 20;
 }

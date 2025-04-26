@@ -12,6 +12,7 @@ BigEnemy::BigEnemy(sf::Vector2f Pos) : BaseEnemy(Pos)
 	barrel.setPosition(Pos);
 
 	//set stats for big enemy
+	maxHealth = 150;
 	speed = 50.0f;
 	health = 150;
 	cooldown = 2.5f;

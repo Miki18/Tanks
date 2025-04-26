@@ -4,7 +4,7 @@
 NormalEnemy::NormalEnemy(sf::Vector2f Pos) : BaseEnemy(Pos)
 {
 	//Main Body Color
-	circle.setFillColor(sf::Color{ 100, 0, 0, 255 });
+	circle.setFillColor(sf::Color{ 150, 0, 0, 255 });
 
 	//Barrel set size and position
 	barrel.setSize(sf::Vector2f(40, 15));

@@ -30,6 +30,9 @@ private:
 
 	//Music
 	sf::Music music;
+	sf::SoundBuffer soundbuffer;
+	sf::Sound sound;
+	bool RunSound;
 
 	//Window constant values
 	const int WindowXSize = 1600;
@@ -59,6 +62,9 @@ private:
 
 	//Texture
 	sf::Texture CoinText;
+	sf::Texture healText;
+	sf::Texture fastText;
+	sf::Texture ballText;
 
 	//to control player movement
 	bool MovePlayer = false;
@@ -91,7 +97,7 @@ private:
 
 public:
 	//constructor
-	Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score);
+	Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score, int G, int B, bool RunMusic, bool RunSound);
 
 	//input, update, render
 	void input();

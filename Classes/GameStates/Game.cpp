@@ -92,7 +92,7 @@ void Game::ObjectSpawningControl(float dt)
 		TimeUntilCoinSpawn = 6.0f;
 	}
 
-	if (TimeUntilEnemySpawn < 0.0f and enemies.size() < 8)
+	if (TimeUntilEnemySpawn < 0.0f and enemies.size() < 14)
 	{
 		int PosX = rand() % 32;
 		int PosY = rand() % 18;
@@ -103,10 +103,10 @@ void Game::ObjectSpawningControl(float dt)
 
 		if (NextEnemySpawnAfter >= 4.1f)      //new enemy will spawn faster
 		{
-			NextEnemySpawnAfter = NextEnemySpawnAfter - 0.1f;
+			NextEnemySpawnAfter = NextEnemySpawnAfter - 0.2f;
 		}
 	}
-	else if(TimeUntilEnemySpawn < 0.0f and enemies.size() >= 10)
+	else if(TimeUntilEnemySpawn < 0.0f)
 	{
 		//If it is not possible to add other enemy, then reset timer
 		TimeUntilEnemySpawn = NextEnemySpawnAfter;
@@ -137,6 +137,17 @@ bool Game::SpawnObject(int PosX, int PosY, ObjectType Object)
 	//SpawnCoin
 	if (Object == ObjectType::CoinType)
 	{
+		//Check if any coin is here
+		for (int i = 0; i < coins.size(); i++)
+		{
+			if (coins[i].getPosition() == sf::Vector2f(25 + PosX * 50, 25 + PosY * 50))
+			{
+				//if any coin is in this position then
+				return false;
+			}
+		}
+
+		//if not spawn a new coin
 		Coin coin(CoinText, sf::Vector2f(25 + PosX * 50, 25 + PosY * 50));
 		coins.emplace_back(coin);
 		return true;
@@ -149,7 +160,7 @@ bool Game::SpawnObject(int PosX, int PosY, ObjectType Object)
 		float dy = player.getPosition().y - 25 + PosY * 50;
 
 		//the distance can't be less than 200
-		if (sqrt(dx * dx + dy * dy) < 200)
+		if (sqrt(pow(dx * dx, 2) + pow(dy * dy, 2)) < 200)
 		{
 			return false;
 		}
@@ -175,8 +186,40 @@ bool Game::SpawnObject(int PosX, int PosY, ObjectType Object)
 	}
 	else if (Object == ObjectType::PowerUpType)
 	{
-		PowerUp powerup(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50), rand() % 7);
-		powerups.emplace_back(powerup);
+
+		//check if any powerup is here
+		for (int i = 0; i < powerups.size(); i++)
+		{
+			//if any powerup is here than return false
+			if (powerups[i].getPowerupPos() == sf::Vector2f(25 + PosX * 50, 25 + PosY * 50))
+			{
+				return false;
+			}
+		}
+
+		//if there isn't any powerup than spawn a new one
+		//Pass only this texture, what will be used in PowerUp class
+		int RandomPowerupPick = rand() % 7;
+		if (RandomPowerupPick == 0 or RandomPowerupPick == 1 or RandomPowerupPick == 2)
+		{
+			//Change RandomPowerPick to 0 - 2 value so it matchs with powerup types
+			RandomPowerupPick = 0;
+			PowerUp powerup(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50), RandomPowerupPick, fastText);
+			powerups.emplace_back(powerup);
+		}
+		else if (RandomPowerupPick == 3 or RandomPowerupPick == 4 or RandomPowerupPick == 5)
+		{
+			RandomPowerupPick = 1;
+			PowerUp powerup(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50), RandomPowerupPick, ballText);
+			powerups.emplace_back(powerup);
+		}
+		else
+		{
+			RandomPowerupPick = 2;
+			PowerUp powerup(sf::Vector2f(25 + PosX * 50, 25 + PosY * 50), RandomPowerupPick, healText);
+			powerups.emplace_back(powerup);
+		}
+
 		return true;
 	}
 }
@@ -262,7 +305,7 @@ void Game::Player_CoinsCollision()
 {
 	for (int i = 0; i < coins.size(); i++)
 	{
-		if (sqrt(pow((coins[i].getPosition().x - player.getPosition().x), 2) + pow((coins[i].getPosition().y - player.getPosition().y), 2)) < player.getPlayerRadius() * 1.5)
+		if (sqrt(pow((coins[i].getPosition().x - player.getPosition().x), 2) + pow((coins[i].getPosition().y - player.getPosition().y), 2)) < player.getPlayerRadius() + coins[i].getRadius())
 		{
 			Score++;
 			coins.erase(coins.begin() + i);
@@ -446,8 +489,11 @@ void Game::Player_PowerupsCollision()
 //This function will check if enemy's vision is blocked by walls
 void Game::EnemyVisionLimitedbyWalls(int enemyNum)
 {	
+	//Player_AI_X_DIFFERENCE will have a player.getPosition().x - enemies[enemyNum]->getEnemyPosition().x value to control if it is 0 or no
+	float Player_AI_X_Difference = player.getPosition().x - enemies[enemyNum]->getEnemyPosition().x;
+
 	//if enemy and player are on the same x position
-	if (enemies[enemyNum]->getEnemyPosition().x == player.getPosition().x)
+	if (abs(Player_AI_X_Difference) < 0.0001f)
 	{
 		for (int i = 0; i < walls.size(); i++)
 		{
@@ -465,7 +511,7 @@ void Game::EnemyVisionLimitedbyWalls(int enemyNum)
 	}
 	else
 	{
-		float a = (player.getPosition().y - enemies[enemyNum]->getEnemyPosition().y) / (player.getPosition().x - enemies[enemyNum]->getEnemyPosition().x);
+		float a = (player.getPosition().y - enemies[enemyNum]->getEnemyPosition().y) / Player_AI_X_Difference;
 
 		//in case if a is too close to 0 and game could round it to 0
 		if (std::abs(a) < 0.0001)
@@ -535,6 +581,11 @@ void Game::EnemyVisionLimitedbyWalls(int enemyNum)
 	{
 		bullets.emplace_back(enemies[enemyNum]->getEnemyPosition(), player.getPosition(), WindowXSize, WindowYSize, enemies[enemyNum]->getDamage(), false, 400);
 		enemies[enemyNum]->ResetCooldown();
+
+		if (RunSound == true)
+		{
+			sound.play();
+		}
 	}
 }
 
@@ -566,7 +617,7 @@ void Game::ImGuiHeathAndPoinsWindow()
 //Constructor
 //Constructor will load all textures and will store it in memory, so 
 //it will not have to be load every time when new object will be created
-Game::Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score) : window(window), changeState(changeState), level(level), Score(Score), player(sf::Vector2f(0, 0)), CoinText("Resources/coin.png")
+Game::Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score, int G, int B, bool RunMusic, bool RunSound) : window(window), changeState(changeState), level(level), Score(Score), player(sf::Vector2f(0, 0), G, B), CoinText("Resources/coin.png"), sound(soundbuffer), healText("Resources/heal.png"), fastText("Resources/fast.png"), ballText("Resources/balls.png")
 {
 	//time
 	srand(time(NULL));
@@ -574,12 +625,29 @@ Game::Game(sf::RenderWindow& window, bool& changeState, int& level, int& Score) 
 	LoadLevel(level);
 	//set texture
 	CoinText.setSmooth(false);
+	healText.setSmooth(false);
+	fastText.setSmooth(false);
+	ballText.setSmooth(false);
 	//imgui
 	ImGui::GetIO().FontGlobalScale = 1.5;
-	//Music
-	music.openFromFile("Music/TheBuilder.mp3");
-	music.setLooping(true);
-	music.play();
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
+
+	//Music and sound effect
+	if (RunMusic == true)
+	{
+		music.openFromFile("Music/TheBuilder.mp3");
+		music.setLooping(true);
+		music.play();
+	}
+
+	this->RunSound = RunSound;
+	if (RunSound == true)
+	{
+		soundbuffer.loadFromFile("Music/bop.mp3");
+		sound.setBuffer(soundbuffer);
+	}
 }
 
 
@@ -610,6 +678,11 @@ void Game::input()
 				{
 					bullets.emplace_back(player.getPosition(), CurrentMousePos, WindowXSize, WindowYSize, player.getDamage(), true, 400);
 					TimeSincePlayerShoot = 0.0f;   //reset time
+
+					if (RunSound == true)
+					{
+						sound.play();
+					}
 				}
 			}
 		}
@@ -632,7 +705,6 @@ void Game::update()
 {
 	//Update Time and Mouse Position
 	float dt = deltaClock.restart().asSeconds();
-	//printf("%f\n", dt);
 	CurrentMousePos = window.mapPixelToCoords(sf::Mouse::getPosition());
 
 	//Player move
@@ -743,6 +815,28 @@ void Game::render()
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		enemies[i]->drawEnemy(window);
+
+		//draw enemy health bar
+		float ActualHealth = enemies[i]->getEnemyHealth();
+		if (ActualHealth == 0)
+		{
+			continue;
+		}
+
+		float MaxHealth = enemies[i]->getMaxHealth();
+
+		std::string name = "enemy" + std::to_string(i);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
+		ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+		ImGui::SetNextWindowBgAlpha(0.0f);
+		ImGui::SetNextWindowPos(ImVec2(enemies[i]->getEnemyPosition().x - 15, enemies[i]->getEnemyPosition().y - 3));
+		ImGui::Begin(name.c_str(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::ProgressBar(ActualHealth / MaxHealth, ImVec2(30, 6), "");
+		ImGui::End();
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor(1);
 	}
 
 	player.DrawPlayer(window);

@@ -22,8 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//Create RenderWindow and variables for manage states (and those which has to be between states)
 	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({ 1600, 900 }), "Tanks", sf::Style::None, sf::State::Fullscreen, settings);
-	State CurrentGameState = State::MenuState;     //FINAL
-	//State CurrentGameState = State::GameState;      //FOR TESTS
+	State CurrentGameState = State::MenuState;
 	bool changeState;
 	int YourLastScore = 0;
 
@@ -31,15 +30,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//Level 1 is default
 	int level = 1;
 
+	//Player color (RGB) - R value will always be 0
+	//G = 100 and B = 0 <- default values
+	int G = 100;
+	int B = 0;
+
+	//Music variables
+	bool RunMusic = true;
+	bool RunSound = true;
+
 	//Imgui init
 	ImGui::SFML::Init(window);
 
 	//States
-	Menu* menu = new Menu(window, changeState, level, YourLastScore, true);     //FINAL  //Last argument tell us if we should start with MainMenu or End screen
+	Menu* menu = new Menu(window, changeState, level, YourLastScore, true, G, B, RunMusic, RunSound);     //FINAL  //Last argument tell us if we should start with MainMenu or End screen
 	Game* game = nullptr;
-
-	//Menu* menu = nullptr;                            //FOR TESTS
-	//Game* game = new Game(window, changeState);
 
 	//Main game loop
 	while (window.isOpen())
@@ -70,13 +75,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			{
 				delete menu;
 				YourLastScore = 0;       //reset
-				game = new Game(window, changeState, level, YourLastScore);
+				game = new Game(window, changeState, level, YourLastScore, G, B, RunMusic, RunSound);
 				CurrentGameState = State::GameState;
 			}
 			else
 			{
 				delete game;
-				menu = new Menu(window, changeState, level, YourLastScore, false);
+				menu = new Menu(window, changeState, level, YourLastScore, false, G, B, RunMusic, RunSound);
 				CurrentGameState = State::MenuState;
 			}
 			changeState = false;

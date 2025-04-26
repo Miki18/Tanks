@@ -1,11 +1,13 @@
 #include "Player.h"
 
 //Constructor
-Player::Player(sf::Vector2f PlayerPos)
+Player::Player(sf::Vector2f PlayerPos, int G, int B)
 {
+	//Player has value G and B to set tank's color - value R will always be 0
+	
 	//Visualization - main body
 	circle.setRadius(20.0f);
-	circle.setFillColor(sf::Color{ 0, 100, 0, 255 });
+	circle.setFillColor(sf::Color{ 0, (uint8_t) G, (uint8_t) B, 255 });
 	circle.setOutlineThickness(5.0f);
 	circle.setOutlineColor(sf::Color::Black);
 	circle.setOrigin(circle.getGeometricCenter());
