@@ -33,7 +33,7 @@ These functions configure text, buttons and background based on specified values
 
 ## Game
 
-![Gameplay](gameplay.png)
+![Gameplay](GamePlay.png)
 Game is based on input -> update -> render loop *(a.k.a game loop)*. Render consists of three phases: clear, draw, and display. <br>
 
 At the start, the game will either load a level from a file or generate one, depending on the user's selection in the *menu* stage.<br>
